@@ -5,16 +5,20 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
-import java.awt.List;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class Ver_Articulos extends JFrame implements WindowListener
 {
@@ -24,11 +28,13 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel lblNuevoArtculo;
 	private JTable table;
+	private JLabel lblNuevoArtculo;
 	private JButton btnVolver;
-
-
+	private ResultSet resultset;
+	private Conecta_BBDD base_datos = new Conecta_BBDD();
+	private DefaultTableModel modelo = new DefaultTableModel();
+	private DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 	/**
 	 * Create the frame.
 	 */
@@ -46,18 +52,10 @@ public class Ver_Articulos extends JFrame implements WindowListener
 		lblNuevoArtculo.setBounds(214, 11, 89, 24);
 		contentPane.add(lblNuevoArtculo);
 
-		table = new JTable();
-		table.setBounds(130, 177, 173, -81);
-		contentPane.add(table);
-
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setBounds(10, 38, 468, 2);
 		contentPane.add(separator);
-
-		List list = new List();
-		list.setBounds(98, 73, 297, 299);
-		contentPane.add(list);
 
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -67,6 +65,26 @@ public class Ver_Articulos extends JFrame implements WindowListener
 		});
 		btnVolver.setBounds(389, 397, 89, 23);
 		contentPane.add(btnVolver);
+/*
+		table = new JTable(modelo);	
+		table.setBounds(33, 64, 418, 309);
+		contentPane.add(table);
+		
+		table.getColumnModel().getColumn(0).setCellRenderer(tcr);
+		table.getColumnModel().getColumn(1).setCellRenderer(tcr);
+		table.getColumnModel().getColumn(2).setCellRenderer(tcr);
+
+		//AÑADIMOS LAS COLUMNAS AL JTABLE
+		modelo.addColumn("Descripción Artículo");
+		modelo.addColumn("Precio");
+		modelo.addColumn("Stock");
+
+		//HACEMOS QUE EL TEXTO DENTRO DE LA TABLA SALGA CENTRADO
+		tcr.setHorizontalAlignment(SwingConstants.CENTER); //ALINEA LOS STRINGS EN EL CENTRO DE LA CELDA
+		
+		*/
+		rellena_tabla();
+		
 
 		this.setVisible(false);
 		this.setLocationRelativeTo(null);
@@ -78,6 +96,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	public void windowClosed(WindowEvent e)
 	{
 		this.setVisible(false);	
+
 	}
 
 	public void windowClosing(WindowEvent e)
@@ -94,4 +113,30 @@ public class Ver_Articulos extends JFrame implements WindowListener
 
 	public void windowOpened(WindowEvent e)
 	{}
-}
+
+	public void rellena_tabla()
+	{
+		Object [] encabezado = {"Descripción Artículo", "Precio", "Stock"};
+		modelo.addRow(encabezado);
+
+		resultset = Conecta_BBDD.obtener_objetos("SELECT * FROM articulos ORDER BY 2;");
+
+		try 
+		{
+			while(resultset.next())//USAMOS UN WHILE PARA RELLENAR LA TABLA
+			{
+				Object [] fila = new Object[3]; // HAY 3 COLUMNAS
+
+				// SE RELLENA CADA POSICIÓN DEL ARRAY CON UNA DE LAS COLUMNAS DE LA TABLA EN LA BASE DE DATOS
+				for (int i = 0; i < 3; i++)
+				{
+					fila[i] = resultset.getObject(i+2); // EL PRIMER INDICE EN EL RS ES EL 1, NO EL 0, POR ESO SE SUMA 1.
+				}
+				modelo.addRow(fila); // SE AÑADE AL MODELO LA FILA COMPLETA
+			}
+			}catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}

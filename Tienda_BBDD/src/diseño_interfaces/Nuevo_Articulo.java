@@ -116,6 +116,10 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String sentencia_nuevo_artivulo = "INSERT INTO articulos (descripcionArticulo, precioArticulo, stockArticulo) VALUES ('" + textField.getText() + "', " + textField_1.getText() + ", " + textField_2.getText() + ");"; 
+				System.out.println(sentencia_nuevo_artivulo);
+				Conecta_BBDD.agregar_objeto(sentencia_nuevo_artivulo);		
 				dialogo1.setVisible(true);
 			}
 		});

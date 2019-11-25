@@ -8,6 +8,8 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,33 +20,38 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 
-public class Modificar_Articulo extends JFrame implements WindowListener
+public class Modificar_Articulo extends JFrame implements WindowListener, ItemListener
 {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Conecta_BBDD base_datos = new Conecta_BBDD();
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField textField_2;
 	private JLabel lblPrecio;
 	private JLabel label;
 	private JLabel lblCantidad;
-	private JTextField textField_2;
 	private JLabel lblNuevoArtculo;
 	private JButton button;
 	private JButton button_1;
-	private JLabel label_1;
+	private JLabel lblSeleccionarArtculo;
 	private JComboBox<String> comboBox;
 	private JDialog dialogo1;
 	private Panel panel1;
 	private Panel panel2;
 	private JLabel mensaje1;
 	private JButton btn_dialogo_1;
-
+	private ResultSet resultset1;
+	private ResultSet resultset2;
+	private String nombre_articulo;
 	/**
 	 * Create the frame.
 	 */
@@ -106,6 +113,7 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Modificar_Articulo.this.setVisible(false);
+				Modificar_Articulo.this.dispose();
 			}
 		});
 		button.setBounds(292, 397, 89, 23);
@@ -113,23 +121,30 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 
 		button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dialogo1.setVisible(true);
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(!comboBox.getSelectedItem().equals("Elegir uno..."))
+				{
+					String sentencia_modificar_podologo = "UPDATE articulos SET descripcionArticulo = '" + textField.getText() + "', precioArticulo = " + textField_1.getText() + ", stockArticulo = " + textField_2.getText() + " WHERE descripcionArticulo = '"+ nombre_articulo +"';";
+					System.out.println(sentencia_modificar_podologo);
+					Conecta_BBDD.agregar_objeto(sentencia_modificar_podologo);
+					dialogo1.setVisible(true);
+				}	
 			}
 		});
 		button_1.setBounds(389, 397, 89, 23);
 		contentPane.add(button_1);
 
-		label_1 = new JLabel("Seleccionar Ticket: ");
-		label_1.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		label_1.setBounds(79, 114, 130, 24);
-		contentPane.add(label_1);
+		lblSeleccionarArtculo = new JLabel("Seleccionar Art\u00EDculo: ");
+		lblSeleccionarArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+		lblSeleccionarArtculo.setBounds(66, 110, 153, 24);
+		contentPane.add(lblSeleccionarArtculo);
 
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(250, 112, 154, 20);
 		contentPane.add(comboBox);
 
-		//------------------Dialog----------------------
+		//------------------Dialog------------------------------
 		dialogo1 = new JDialog(this, "", true);
 		mensaje1 = new JLabel("Artículo modificado con éxito.");
 		dialogo1.getContentPane().setLayout(new BorderLayout());
@@ -149,10 +164,19 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 		btn_dialogo_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dialogo1.setVisible(false);
+				Modificar_Articulo.this.dispose();
+				new Modificar_Articulo().setVisible(true);
 			}
 		});
-		//------------------------------------------------
+		//--------------------------------------------------------
+		
+		//-------------RELLENA JCOMBOBOX DE ARTICULOS-------------
+		comboBox.addItem("Elegir uno...");
+		rellena_jcombobox_articulos();
+		//--------------------------------------------------------
 
+		comboBox.addItemListener( this);
+		this.addWindowListener(this);
 		this.setVisible(false);
 		this.setLocationRelativeTo(null);
 	}
@@ -161,12 +185,13 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 	{}
 
 	public void windowClosed(WindowEvent e)
-	{
-		this.setVisible(false);	
-	}
+	{}
 
 	public void windowClosing(WindowEvent e)
-	{}
+	{
+		this.setVisible(false);	
+		this.dispose();
+	}
 
 	public void windowDeactivated(WindowEvent e)
 	{}
@@ -179,4 +204,57 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 
 	public void windowOpened(WindowEvent e)
 	{}
+
+	public void rellena_jcombobox_articulos()
+	{
+		resultset1 = Conecta_BBDD.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
+
+		try //USAMOS UN WHILE PARA RELLENAR EL JCOMBOX CON LOS RESULTADOS DEL RESULSET
+		{
+			while(resultset1.next())
+			{
+				comboBox.addItem(resultset1.getString("descripcionArticulo"));
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	public void rellena_todos_los_campos()
+	{
+
+		try //USAMOS UN WHILE PARA RELLENAR LOS CAMPOS CON LOS DATOS DEL RESULSET
+		{
+			while(resultset2.next())
+			{
+				textField.setText(resultset2.getString("descripcionArticulo"));
+				textField_1.setText(resultset2.getString("precioArticulo"));
+				textField_2.setText(resultset2.getString("stockArticulo"));
+
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}		
+	}		
+	
+	@Override
+	public void itemStateChanged(ItemEvent ie)
+	{
+		
+		if(ie.getStateChange()==1 && (!comboBox.getSelectedItem().equals("Elegir uno...")))  // LA PRIMERA CONDICIÓN SIRVE PARA SOLUCIONAR EL PROBLEMA DE QUE EL JCOMBOBOX SE LLAME DOS VECES CON EL ITEMLISTENER, CON LOS CHOICE NO OCURRE ESTE PROBLEMA
+		{
+			nombre_articulo = (String)ie.getItem();
+			System.out.println("SELECT * FROM articulos WHERE descripcionArticulo = '" + nombre_articulo +"';");
+			resultset2 = Conecta_BBDD.obtener_objetos("SELECT * FROM articulos WHERE descripcionArticulo = '" + (String)ie.getItem() +"';"); //ACTUALIZA EL RESULTSET
+			rellena_todos_los_campos();
+		}else
+		{
+			textField.setText("");
+			textField_1.setText("");
+			textField_2.setText("");
+		}
+	}	
 }

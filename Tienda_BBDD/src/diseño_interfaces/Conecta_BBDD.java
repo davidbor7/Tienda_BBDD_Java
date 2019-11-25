@@ -6,16 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Conecta_BBDD
+public class  Conecta_BBDD
 {
-	String driver = "com.mysql.jdbc.Driver";
-	String url ="jdbc:mysql://localhost:3306/policlinica?autoReconnect=true&useSSL=false";
-	String login = "administrativo";
-	String password = "studium2019;";
-	String sentencia = null;
-	Connection connection = null;
-	Statement statement = null;
-	ResultSet rs = null;
+	private String driver = "com.mysql.jdbc.Driver";
+	private String url ="jdbc:mysql://localhost:3306/tienda?autoReconnect=true&useSSL=false";
+	private String login = "root";
+	private String password = "Studium2019;";
+	private static Connection connection = null;
+	private static Statement statement = null;
+	private static ResultSet rs = null;
 
 	public Conecta_BBDD()
 	{
@@ -37,7 +36,7 @@ public class Conecta_BBDD
 		}
 	}
 
-	public void agregar_objeto(String sentencia)
+	public static void agregar_objeto(String sentencia)
 	{
 		try
 		{
@@ -53,7 +52,7 @@ public class Conecta_BBDD
 		}
 	}
 
-	public Object obtener_objetos(String sentencia)
+	public static ResultSet obtener_objetos(String sentencia)
 	{
 		try
 		{

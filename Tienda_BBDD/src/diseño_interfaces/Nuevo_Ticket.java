@@ -31,11 +31,8 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
 	private JLabel lblCantidad;
 	private JLabel lblNuevoArtculo;
-	private JTextField textField_1;
-	private JTextField textField_2;
 	private JDialog dialogo1;
 	private Panel panel1;
 	private Panel panel2;
@@ -69,21 +66,6 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		lblDescripcin.setBounds(107, 86, 88, 24);
 		contentPane.add(lblDescripcin);
 
-		textField = new JTextField();
-		textField.setBounds(205, 86, 39, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(258, 86, 39, 24);
-		contentPane.add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(309, 86, 73, 24);
-		contentPane.add(textField_2);
-
 		lblCantidad = new JLabel("Precio Total: ");
 		lblCantidad.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
 		lblCantidad.setBounds(107, 353, 88, 24);
@@ -108,24 +90,24 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		
 		JLabel label = new JLabel("/");
 		label.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		label.setBounds(248, 86, 13, 24);
+		label.setBounds(255, 86, 13, 24);
 		contentPane.add(label);
 		
 		JLabel label_1 = new JLabel("/");
 		label_1.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		label_1.setBounds(299, 86, 13, 24);
+		label_1.setBounds(356, 86, 13, 24);
 		contentPane.add(label_1);
 		
 		JLabel lblDa = new JLabel("D\u00EDa");
-		lblDa.setBounds(215, 70, 18, 14);
+		lblDa.setBounds(222, 70, 18, 14);
 		contentPane.add(lblDa);
 		
 		JLabel lblMes = new JLabel("Mes");
-		lblMes.setBounds(269, 70, 28, 14);
+		lblMes.setBounds(307, 70, 28, 14);
 		contentPane.add(lblMes);
 		
 		JLabel lblAo = new JLabel("A\u00F1o");
-		lblAo.setBounds(331, 70, 28, 14);
+		lblAo.setBounds(401, 70, 28, 14);
 		contentPane.add(lblAo);
 		
 		JButton btnNewButton_1 = new JButton("Guardar");
@@ -171,6 +153,18 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		JLabel lblCantidad_1 = new JLabel("Cantidad");
 		lblCantidad_1.setBounds(46, 156, 51, 14);
 		contentPane.add(lblCantidad_1);
+		
+		JComboBox<String> comboBox_2 = new JComboBox<String>();
+		comboBox_2.setBounds(204, 86, 45, 20);
+		contentPane.add(comboBox_2);
+		
+		JComboBox<String> comboBox_3 = new JComboBox<String>();
+		comboBox_3.setBounds(269, 88, 81, 20);
+		contentPane.add(comboBox_3);
+		
+		JComboBox<String> comboBox_4 = new JComboBox<String>();
+		comboBox_4.setBounds(368, 88, 81, 20);
+		contentPane.add(comboBox_4);
 
 		//------------------Dialog----------------------
 		dialogo1 = new JDialog(this, "", true);
@@ -194,6 +188,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 				dialogo1.setVisible(false);
 			}
 		});
+	
 	   //------------------------------------------------
 		
 		this.setVisible(false);

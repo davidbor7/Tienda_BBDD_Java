@@ -24,12 +24,13 @@ public class Principal extends JFrame implements ActionListener
 		}
 	};
 	
-	
+	private Nuevo_Articulo nuevo_articulo;
 	private Eliminar_Articulo eliminar_articulo = new Eliminar_Articulo();
-	private Modificar_Articulo modificar_articulo = new Modificar_Articulo();
+	private Modificar_Articulo modificar_articulo;
 	private Ver_Articulos ver_articulos = new Ver_Articulos();
 	private Nuevo_Ticket nuevo_ticket = new Nuevo_Ticket();
 	private Ver_Tickets ver_tickets = new Ver_Tickets();
+	private Conecta_BBDD base_datos = new Conecta_BBDD();
 	
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu mnNewMenu = new JMenu("Art\u00EDculos");
@@ -104,7 +105,7 @@ public class Principal extends JFrame implements ActionListener
 
 		if(ae.getSource().equals(mntmNewMenuItem))
 		{	
-			Nuevo_Articulo nuevo_articulo = new Nuevo_Articulo();
+			nuevo_articulo = new Nuevo_Articulo();
 			nuevo_articulo.setVisible(true);
 
 		}else
@@ -117,7 +118,7 @@ public class Principal extends JFrame implements ActionListener
 			{
 				if(ae.getSource().equals(mntmNewMenuItem_2))
 				{		
-					
+					modificar_articulo = new Modificar_Articulo();
 					modificar_articulo.setVisible(true);
 
 				}else
