@@ -69,7 +69,7 @@ public class Ver_Tickets extends JFrame implements WindowListener
 		btnVolver.setBounds(389, 397, 89, 23);
 		contentPane.add(btnVolver);
 
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setLocationRelativeTo(null);
 	}
 

@@ -9,26 +9,28 @@ import javax.swing.border.*;
 public class Principal extends JFrame implements ActionListener
 {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane = new JPanel() {
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
-
-		public void paintComponent(Graphics g) {
-			  Dimension tamanio = getSize();
-			  ImageIcon imagenFondo = new ImageIcon(getClass().getResource("SHOP.png"));
-			  g.drawImage(imagenFondo.getImage(), 0, 0, tamanio.width, tamanio.height, null);
-			  setOpaque(false);
-			  super.paintComponent(g);
-			 }
-		
+		public void paintComponent(Graphics g) 
+		{
+			super.paintComponent(g);
+			Dimension tamanio = getSize();
+			ImageIcon imagenFondo = new ImageIcon(getClass().getResource("SHOP.png"));
+			g.drawImage(imagenFondo.getImage(), 0, 0, tamanio.width, tamanio.height, null);
+			setOpaque(false);	
+		}
 	};
+	
+	
+	private Eliminar_Articulo eliminar_articulo = new Eliminar_Articulo();
+	private Modificar_Articulo modificar_articulo = new Modificar_Articulo();
+	private Ver_Articulos ver_articulos = new Ver_Articulos();
+	private Nuevo_Ticket nuevo_ticket = new Nuevo_Ticket();
+	private Ver_Tickets ver_tickets = new Ver_Tickets();
+	
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu mnNewMenu = new JMenu("Art\u00EDculos");
 	private JMenuItem mntmNewMenuItem = new JMenuItem("Nuevo Art\u00EDculo");
@@ -37,9 +39,7 @@ public class Principal extends JFrame implements ActionListener
 	private JMenuItem mntmNewMenuItem_3 = new JMenuItem("Ver Art\u00EDculos");
 	private JMenu mnTickets = new JMenu("Tickets");
 	private JMenuItem mntmNewMenuItem_4 = new JMenuItem("Nuevo Ticket");
-	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("Eliminar Ticket");
-	private JMenuItem mntmNewMenuItem_6 = new JMenuItem("Modificar Ticket");
-	private JMenuItem mntmNewMenuItem_7 = new JMenuItem("Ver Tickets");
+	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("Ver Tickets");
 
 	/**
 	 * Launch the application.
@@ -81,8 +81,7 @@ public class Principal extends JFrame implements ActionListener
 		menuBar.add(mnTickets);
 		mnTickets.add(mntmNewMenuItem_4);
 		mnTickets.add(mntmNewMenuItem_5);
-		mnTickets.add(mntmNewMenuItem_6);
-		mnTickets.add(mntmNewMenuItem_7);
+
 
 		mntmNewMenuItem.addActionListener(this);
 		mntmNewMenuItem_1.addActionListener(this);
@@ -90,21 +89,18 @@ public class Principal extends JFrame implements ActionListener
 		mntmNewMenuItem_3.addActionListener(this);
 		mntmNewMenuItem_4.addActionListener(this);
 		mntmNewMenuItem_5.addActionListener(this);
-		mntmNewMenuItem_6.addActionListener(this);
-		mntmNewMenuItem_7.addActionListener(this);
-		
-	
+
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		this.setLocationRelativeTo(null);
 	}
-	
-	
+
+
 	@Override
 	public void actionPerformed(ActionEvent ae)
 	{
-	
+
 
 		if(ae.getSource().equals(mntmNewMenuItem))
 		{	
@@ -115,51 +111,34 @@ public class Principal extends JFrame implements ActionListener
 		{
 			if(ae.getSource().equals(mntmNewMenuItem_1))
 			{		
-				Eliminar_Articulo eliminar_articulo = new Eliminar_Articulo();
+				
 				eliminar_articulo.setVisible(true);
 			}else
 			{
 				if(ae.getSource().equals(mntmNewMenuItem_2))
 				{		
-					Modificar_Articulo modificar_articulo = new Modificar_Articulo();
+					
 					modificar_articulo.setVisible(true);
 
 				}else
 				{
 					if(ae.getSource().equals(mntmNewMenuItem_3))
 					{			
-						Ver_Articulos ver_articulos = new Ver_Articulos();
+						
 						ver_articulos.setVisible(true);
 					}else
 					{
 						if(ae.getSource().equals(mntmNewMenuItem_4))
 						{		
-							Nuevo_Ticket nuevo_ticket = new Nuevo_Ticket();
+							
 							nuevo_ticket.setVisible(true);
 
 						}else
 						{
 							if(ae.getSource().equals(mntmNewMenuItem_5))
-							{		
-								Eliminar_Ticket eliminar_ticket = new Eliminar_Ticket();
-								eliminar_ticket.setVisible(true);
-
-							}else
 							{
-								if(ae.getSource().equals(mntmNewMenuItem_6))
-								{		
-									Modificar_Ticket modificar_ticket = new Modificar_Ticket();
-									modificar_ticket.setVisible(true);
+								ver_tickets.setVisible(true);
 
-								}else
-								{
-									if(ae.getSource().equals(mntmNewMenuItem_7))
-									{		
-										Ver_Tickets ver_tickets = new Ver_Tickets();
-										ver_tickets.setVisible(true);
-
-									}
-								}
 							}
 						}
 					}

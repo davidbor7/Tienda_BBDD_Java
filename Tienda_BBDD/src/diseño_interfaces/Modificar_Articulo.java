@@ -153,7 +153,7 @@ public class Modificar_Articulo extends JFrame implements WindowListener
 		});
 		//------------------------------------------------
 
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setLocationRelativeTo(null);
 	}
 

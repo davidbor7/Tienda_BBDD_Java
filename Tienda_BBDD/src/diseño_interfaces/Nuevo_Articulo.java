@@ -104,6 +104,10 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Nuevo_Articulo.this.setVisible(false);
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
+				textField.requestFocus();
 			}
 		});
 		button.setBounds(288, 397, 89, 23);
@@ -141,8 +145,8 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 			}
 		});
 		//------------------------------------------------
-
-		this.setVisible(true);
+		this.addWindowListener(this);
+		this.setVisible(false);
 		this.setLocationRelativeTo(null);
 	}
 
@@ -150,12 +154,16 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 	{}
 
 	public void windowClosed(WindowEvent e)
-	{
-		this.setVisible(false);	
-	}
+	{}
 
 	public void windowClosing(WindowEvent e)
-	{}
+	{
+		this.setVisible(false);	
+		textField.setText("");
+		textField_1.setText("");
+		textField_2.setText("");
+		textField.requestFocus();	
+	}
 
 	public void windowDeactivated(WindowEvent e)
 	{}
