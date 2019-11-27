@@ -41,7 +41,7 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 	private Panel panel2;
 	private JLabel mensaje1;
 	private JButton btn_dialogo_1;
-
+	private JSeparator separator;
 
 	/**
 	 * Create the frame.
@@ -95,7 +95,7 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		lblNuevoArtculo.setBounds(183, 11, 121, 24);
 		contentPane.add(lblNuevoArtculo);
 
-		JSeparator separator = new JSeparator();
+		separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setBounds(10, 38, 468, 2);
 		contentPane.add(separator);
@@ -116,7 +116,6 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				String sentencia_nuevo_artivulo = "INSERT INTO articulos (descripcionArticulo, precioArticulo, stockArticulo) VALUES ('" + textField.getText() + "', " + textField_1.getText() + ", " + textField_2.getText() + ");"; 
 				System.out.println(sentencia_nuevo_artivulo);
 				Conecta_BBDD.agregar_objeto(sentencia_nuevo_artivulo);		
@@ -145,12 +144,13 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		dialogo1.getContentPane().add(BorderLayout.CENTER, panel2);
 		btn_dialogo_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dialogo1.setVisible(false);
+				Nuevo_Articulo.this.dispose();
 			}
 		});
 		//------------------------------------------------
 		this.addWindowListener(this);
 		this.setVisible(false);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}
 
@@ -162,11 +162,7 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 
 	public void windowClosing(WindowEvent e)
 	{
-		this.setVisible(false);	
-		textField.setText("");
-		textField_1.setText("");
-		textField_2.setText("");
-		textField.requestFocus();	
+		this.dispose();
 	}
 
 	public void windowDeactivated(WindowEvent e)

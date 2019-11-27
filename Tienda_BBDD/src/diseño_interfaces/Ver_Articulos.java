@@ -1,22 +1,23 @@
 package diseño_interfaces;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,66 +29,75 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
-	private JLabel lblNuevoArtculo;
-	private JButton btnVolver;
+	private JTable tabla;
 	private ResultSet resultset;
 	private Conecta_BBDD base_datos = new Conecta_BBDD();
-	private DefaultTableModel modelo = new DefaultTableModel();
-	private DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+	private DefaultTableModel modelo;
+	private DefaultTableCellRenderer tcr;
 	/**
 	 * Create the frame.
 	 */
 	public Ver_Articulos()
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
-		setBounds(100, 100, 500, 470);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+        setBounds(100, 100, 500, 470);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane); 
+        contentPane.setLayout(null);
+        
+        //ARRAY DE STRING CON LAS COLUMNAS DE LA TABLA
+        String[] columnNames = {"Descripción","Precio","Stock"};
 
-		lblNuevoArtculo = new JLabel("ARTÍCULOS");
-		lblNuevoArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblNuevoArtculo.setBounds(214, 11, 89, 24);
-		contentPane.add(lblNuevoArtculo);
-
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.DARK_GRAY);
-		separator.setBounds(10, 38, 468, 2);
-		contentPane.add(separator);
-
-		btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Ver_Articulos.this.setVisible(false);
-			}
-		});
-		btnVolver.setBounds(389, 397, 89, 23);
-		contentPane.add(btnVolver);
-/*
-		table = new JTable(modelo);	
-		table.setBounds(33, 64, 418, 309);
-		contentPane.add(table);
-		
-		table.getColumnModel().getColumn(0).setCellRenderer(tcr);
-		table.getColumnModel().getColumn(1).setCellRenderer(tcr);
-		table.getColumnModel().getColumn(2).setCellRenderer(tcr);
-
-		//AÑADIMOS LAS COLUMNAS AL JTABLE
-		modelo.addColumn("Descripción Artículo");
-		modelo.addColumn("Precio");
-		modelo.addColumn("Stock");
-
-		//HACEMOS QUE EL TEXTO DENTRO DE LA TABLA SALGA CENTRADO
-		tcr.setHorizontalAlignment(SwingConstants.CENTER); //ALINEA LOS STRINGS EN EL CENTRO DE LA CELDA
-		
-		*/
-		rellena_tabla();
-		
-
+        //CREAMOS UN MODELO DE DATOS Y LE PASAMOS EL OBJETO QUE CONTIENE EL NOMBRE DE LAS COLUMNAS
+        modelo = new DefaultTableModel(null, columnNames);
+        
+        //SE CREA LA TABLA Y SE LE PASA EL MODELO EN EL CONSTRUCTOR
+        tabla = new JTable(modelo);
+        
+        //SE DEFINE LE TAMAÑO
+        tabla.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        
+        //CREAMOS UN JSCROLLPANE Y LE AÑADIMOS UN JTABLE
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        scrollPane.setBounds(37, 68, 407, 311);
+        
+        //AGREGAMOS EL SCROLL
+        getContentPane().add(scrollPane);
+        
+        //HACEMOS QUE EL TEXTO DENTRO DE LA TABLA SALGA CENTRADO
+        tcr = new DefaultTableCellRenderer();
+        tcr.setHorizontalAlignment(SwingConstants.CENTER); //ALINEA LOS STRINGS EN EL CENTRO DE LA CELDA
+        tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
+        tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
+        tabla.getColumnModel().getColumn(2).setCellRenderer(tcr);
+        
+        JSeparator separator = new JSeparator();
+        separator.setForeground(Color.DARK_GRAY);
+        separator.setBounds(10, 35, 468, 2);
+        contentPane.add(separator);
+        
+        JLabel lblArtculos = new JLabel("ART\u00CDCULOS");
+        lblArtculos.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+        lblArtculos.setBounds(206, 11, 90, 24);
+        contentPane.add(lblArtculos);
+        
+        JButton button = new JButton("Volver");
+        button.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		Ver_Articulos.this.dispose();
+        	}
+        });
+        button.setBounds(355, 397, 89, 23);
+        contentPane.add(button);
+        
+        rellena_tabla();
+        
+        this.setResizable(false);
+        this.addWindowListener(this);
 		this.setVisible(false);
 		this.setLocationRelativeTo(null);
+
 	}
 
 	public void windowActivated(WindowEvent e)
@@ -95,8 +105,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
 
 	public void windowClosed(WindowEvent e)
 	{
-		this.setVisible(false);	
-
+		this.dispose();
 	}
 
 	public void windowClosing(WindowEvent e)
@@ -116,8 +125,6 @@ public class Ver_Articulos extends JFrame implements WindowListener
 
 	public void rellena_tabla()
 	{
-		Object [] encabezado = {"Descripción Artículo", "Precio", "Stock"};
-		modelo.addRow(encabezado);
 
 		resultset = Conecta_BBDD.obtener_objetos("SELECT * FROM articulos ORDER BY 2;");
 

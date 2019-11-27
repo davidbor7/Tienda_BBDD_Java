@@ -112,7 +112,7 @@ public class Principal extends JFrame implements ActionListener
 		{
 			if(ae.getSource().equals(mntmNewMenuItem_1))
 			{		
-				
+				eliminar_articulo = new Eliminar_Articulo();
 				eliminar_articulo.setVisible(true);
 			}else
 			{
@@ -125,7 +125,7 @@ public class Principal extends JFrame implements ActionListener
 				{
 					if(ae.getSource().equals(mntmNewMenuItem_3))
 					{			
-						
+						ver_articulos = new Ver_Articulos();
 						ver_articulos.setVisible(true);
 					}else
 					{

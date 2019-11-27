@@ -177,6 +177,7 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 
 		comboBox.addItemListener( this);
 		this.addWindowListener(this);
+		this.setResizable(false);
 		this.setVisible(false);
 		this.setLocationRelativeTo(null);
 	}
@@ -189,7 +190,6 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 
 	public void windowClosing(WindowEvent e)
 	{
-		this.setVisible(false);	
 		this.dispose();
 	}
 
@@ -219,7 +219,6 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 	public void rellena_todos_los_campos()
@@ -243,7 +242,6 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 	@Override
 	public void itemStateChanged(ItemEvent ie)
 	{
-		
 		if(ie.getStateChange()==1 && (!comboBox.getSelectedItem().equals("Elegir uno...")))  // LA PRIMERA CONDICIÓN SIRVE PARA SOLUCIONAR EL PROBLEMA DE QUE EL JCOMBOBOX SE LLAME DOS VECES CON EL ITEMLISTENER, CON LOS CHOICE NO OCURRE ESTE PROBLEMA
 		{
 			nombre_articulo = (String)ie.getItem();
