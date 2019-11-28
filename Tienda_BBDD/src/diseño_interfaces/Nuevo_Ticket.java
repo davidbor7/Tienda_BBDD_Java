@@ -408,14 +408,14 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 	public void elimina_articulo_de_lista()
 	{
-		
+	
 		mensaje_aviso.setText("");
 
 		int indice = 0;
 		indice = lista.getSelectedIndex(); //RECOGEMOS EL INDICE DEL LA LÍNEA QUE TENEMOS SELECCIONADA EN EL LIST, YA QUE ESTÉ MÉTODO SI SE USA UNA VEZ, LUEGO YA NO DEVUELVE EL ÍNDICE QUE SE ENCUENTRA SELECCIONADO, POR LO QUE LO ALMACENAMOS PARA USARLO VARIAS VECES
 
 		
-		
+	
 		//-------	ELIMINA DEL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
 
 		try
