@@ -56,6 +56,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	private double cantidad_total;
 	private Conecta_BBDD base_datos = new Conecta_BBDD();
 	private ArrayList<String> lista_de_articulos;
+	private JLabel mensaje_articulo_existe;
 	/**
 	 * Create the frame.
 	 */
@@ -105,16 +106,28 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		btnAgregarArticulo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				mensaje_articulo_existe.setText("");
 				
-				
-				
-				String cantidad = combo_cantidad.getSelectedItem().toString();
-				int cantidad_int = Integer.valueOf(cantidad); //OBTENEMOS LA CANTIDAD DEL ARTÍCULO QUE ESTAMOS AÑADIENDO
-				
-				list.add(combo_articulo.getSelectedItem().toString() + "     ||     " + combo_cantidad.getSelectedItem().toString() + "     ||     " + (String.format("%.2f", (dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int))+"€"));
-				cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
+				if (lista_de_articulos.contains(combo_articulo.getSelectedItem().toString()))
+				{
+					mensaje_articulo_existe.setText("El artículo que desea intruducir ya existe.");		
+				}
+				else 
+				{
+					lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
+					
+					//------------------------------------------------------
+					
+					
+					String cantidad = combo_cantidad.getSelectedItem().toString();
+					int cantidad_int = Integer.valueOf(cantidad); //OBTENEMOS LA CANTIDAD DEL ARTÍCULO QUE ESTAMOS AÑADIENDO
+					
+					list.add(combo_articulo.getSelectedItem().toString() + "     ||     " + combo_cantidad.getSelectedItem().toString() + "     ||     " + (String.format("%.2f", (dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int))+"€")); //AÑADIMOS A LA LISTA LA DESCRIPCIÓN LA CANTIDAD Y EL PRECIO, TENIENDO EN CUENTA ESTE ÚLTIMO SEGÚN LA CANTIDAD
+					cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
 
-				cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
+					cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
+					
+				}
 
 			}
 		});
@@ -162,6 +175,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		contentPane.add(btnCancelar);
 
 		JButton btnEliminarArticulo = new JButton("Eliminar Art\u00EDculo");
+		btnEliminarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mensaje_articulo_existe.setText("");
+			}
+		});
 		btnEliminarArticulo.setBounds(106, 314, 130, 23);
 		contentPane.add(btnEliminarArticulo);
 
@@ -188,6 +206,12 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		combo_anyo = new JComboBox<String>();
 		combo_anyo.setBounds(368, 88, 81, 20);
 		contentPane.add(combo_anyo);
+		
+		mensaje_articulo_existe = new JLabel("");
+		mensaje_articulo_existe.setForeground(Color.RED);
+		mensaje_articulo_existe.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 9));
+		mensaje_articulo_existe.setBounds(238, 314, 180, 24);
+		contentPane.add(mensaje_articulo_existe);
 
 		//------------------Dialog----------------------
 		dialogo1 = new JDialog(this, "", true);
