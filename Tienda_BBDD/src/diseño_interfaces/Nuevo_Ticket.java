@@ -433,7 +433,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		{
 			System.err.println("Error al eliminar el elemento del ArrayList.");
 		}
-		
+	
 		
 
 		//-------	ELIMINA DE LA LISTA EL ELEMENTO SELECCIONADO  -----------
