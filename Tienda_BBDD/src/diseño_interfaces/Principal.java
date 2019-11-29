@@ -131,13 +131,14 @@ public class Principal extends JFrame implements ActionListener
 					{
 						if(ae.getSource().equals(mntmNewMenuItem_4))
 						{		
-							
+							nuevo_ticket = new Nuevo_Ticket();
 							nuevo_ticket.setVisible(true);
 
 						}else
 						{
 							if(ae.getSource().equals(mntmNewMenuItem_5))
 							{
+								ver_tickets = new Ver_Tickets();
 								ver_tickets.setVisible(true);
 
 							}

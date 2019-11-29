@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 
@@ -54,20 +55,27 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	private JComboBox<String> combo_anyo;
 	private ResultSet resultset1;
 	private ResultSet resultset2;
+	private ResultSet resultset_idTicket;
+	private ResultSet resultset_idArticulo;
+	long idTicket;
 	private double cantidad_total;
 	private Conecta_BBDD base_datos = new Conecta_BBDD();
 	private ArrayList<String> lista_de_articulos;
+	private ArrayList<Integer> lista_de_cantidades_de_articulos;
 	private JLabel mensaje_aviso;
 	boolean llave = false;
-	private ArrayList<String> lista_de_articulos_en_jlist;
 	private int cantidad_int;
+	private JLabel label_idTicket;
 	/**
 	 * Create the frame.
 	 */
 	public Nuevo_Ticket()
 	{
+		lista_de_cantidades_de_articulos = new ArrayList<Integer>();
+		
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
-		setBounds(100, 100, 500, 470);
+		setBounds(100, 100, 512, 471);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,87 +83,111 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 		separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
-		separator.setBounds(10, 38, 468, 2);
+		separator.setBounds(28, 38, 468, 2);
 		contentPane.add(separator);
 
 		lblNuevoArtculo = new JLabel("NUEVO TICKET");
-		lblNuevoArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblNuevoArtculo.setBounds(197, 11, 121, 24);
+		lblNuevoArtculo.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
+		lblNuevoArtculo.setBounds(204, 11, 125, 24);
 		contentPane.add(lblNuevoArtculo);
 
 		lblFechaTicket = new JLabel("Fecha Ticket:");
-		lblFechaTicket.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblFechaTicket.setBounds(64, 77, 88, 24);
+		lblFechaTicket.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblFechaTicket.setBounds(28, 60, 88, 24);
 		contentPane.add(lblFechaTicket);
 
-		lblCantidad = new JLabel("Precio Total: ");
-		lblCantidad.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblCantidad.setBounds(46, 362, 88, 24);
+		lblCantidad = new JLabel("Precio Total: ", SwingConstants.CENTER);
+		lblCantidad.setForeground(Color.RED);
+		lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCantidad.setBounds(42, 375, 125, 24);
 		contentPane.add(lblCantidad);
 
-		cantidadTotalTicket = new JLabel("0€");
-		cantidadTotalTicket.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		cantidadTotalTicket.setBounds(135, 362, 192, 24);
+		cantidadTotalTicket = new JLabel("0€", SwingConstants.LEFT);
+		cantidadTotalTicket.setForeground(Color.RED);
+		cantidadTotalTicket.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cantidadTotalTicket.setBounds(157, 375, 111, 24);
 		contentPane.add(cantidadTotalTicket);
 
 		lista = new List();
-		lista.setBounds(46, 192, 360, 148);
+		lista.setBounds(53, 188, 414, 162);
 		contentPane.add(lista);
 
 		combo_articulo = new JComboBox<String> ();
-		combo_articulo.setBounds(107, 122, 121, 20);
+		combo_articulo.setBounds(124, 112, 168, 20);
 		contentPane.add(combo_articulo);
 
 		btnAgregarArticulo = new JButton("A\u00F1adir");
 		btnAgregarArticulo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				//mensaje_aviso.setText("");
+			public void actionPerformed(ActionEvent e) 
+			{		
 				agrega_articulo_a_la_lista();
-
-				/*
-				System.out.println("-");
-				System.out.println("-");
-				for (int i = 0; i < lista_de_articulos.size(); i++) 
-				{
-					System.out.println(lista_de_articulos.get(i));
-				}
-				 */
-
 			}
 		});
-		btnAgregarArticulo.setBounds(241, 153, 74, 23);
+		btnAgregarArticulo.setBounds(302, 159, 74, 23);
 		contentPane.add(btnAgregarArticulo);
 
 		JLabel label = new JLabel("/");
 		label.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		label.setBounds(212, 77, 13, 24);
+		label.setBounds(176, 60, 13, 24);
 		contentPane.add(label);
 
 		JLabel label_1 = new JLabel("/");
 		label_1.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		label_1.setBounds(313, 77, 13, 24);
+		label_1.setBounds(297, 60, 13, 24);
 		contentPane.add(label_1);
 
 		JLabel lblDia = new JLabel("D\u00EDa");
-		lblDia.setBounds(179, 61, 18, 14);
+		lblDia.setBounds(143, 44, 18, 14);
 		contentPane.add(lblDia);
 
 		JLabel lblMes = new JLabel("Mes");
-		lblMes.setBounds(264, 61, 28, 14);
+		lblMes.setBounds(228, 44, 28, 14);
 		contentPane.add(lblMes);
 
 		JLabel lblAnyo = new JLabel("A\u00F1o");
-		lblAnyo.setBounds(358, 61, 28, 14);
+		lblAnyo.setBounds(328, 44, 28, 14);
 		contentPane.add(lblAnyo);
 
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dialogo1.setVisible(true);
+
+				System.out.println("INSERT INTO tickets (fechaTicket, articulosTicket, totalTicket) VALUES ('"+ combo_anyo.getSelectedItem().toString() + "-"+ devuelve_mes(combo_mes.getSelectedItem().toString()) + "-" + combo_dia.getSelectedItem().toString() +"', "+ lista_de_articulos.size() + ", " + (float)cantidad_total + ");");
+
+				
+				
+				//----------- OBTIENE EL ID DE TODOS LOS OJETOS DE LA LISTA ---------------
+				for (int i = 0; i < lista_de_articulos.size(); i++)
+				{
+					
+					System.out.println("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';");
+					resultset_idArticulo = Conecta_BBDD.obtener_objetos("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';");
+					try
+					{
+						resultset_idArticulo.first();
+						int idArticulo = resultset_idArticulo.getInt(1);	
+						System.out.println("El id del articulo es: " + idArticulo);
+						
+						//+" Y la cantidad de dicho artículo es: " + lista_de_cantidades_de_articulos.get(i) );
+						
+						//System.out.println("INSERT INTO contiene ( idArticuloFK, idTicketFK, cantidadArticulo) VALUES (" + idArticulo +", " + idTicket +", " + lista_de_cantidades_de_articulos.get(i) + ");");
+
+						//Conecta_BBDD.agregar_objeto("INSERT INTO contiene ( idArticuloFK, idTicketFK, cantidadArticulo) VALUES (" + idArticulo +", " + idTicket +", " + lista_de_cantidades_de_articulos.get(i) + ");");
+						
+						
+					} catch (SQLException e1)
+					{
+						System.out.println("Error al capturar el id de un artículo de la lista");
+						e1.printStackTrace();
+					}
+					
+					
+				}		
+				
+				//dialogo1.setVisible(true);
 			}
 		});
-		btnGuardar.setBounds(377, 397, 89, 23);
+		btnGuardar.setBounds(391, 398, 89, 23);
 		contentPane.add(btnGuardar);
 
 		JButton btnCancelar = new JButton("Cancelar");
@@ -164,7 +196,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 				Nuevo_Ticket.this.dispose();
 			}
 		});
-		btnCancelar.setBounds(280, 397, 89, 23);
+		btnCancelar.setBounds(292, 398, 89, 23);
 		contentPane.add(btnCancelar);
 
 		JButton btnEliminarArticulo = new JButton("Eliminar");
@@ -172,57 +204,47 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 			public void actionPerformed(ActionEvent arg0) {
 
 				elimina_articulo_de_lista();
-
-
-				/*
-				mensaje_aviso.setText("");
-				if (lista_de_articulos.contains(combo_articulo.getSelectedItem().toString()))
-				{
-					elimina_articulo_de_lista();
-				}
-				System.out.println("-");
-				System.out.println("-");
-				for (int i = 0; i < lista_de_articulos.size(); i++) 
-				{
-					System.out.println(lista_de_articulos.get(i));
-				}
-				 */
 			}
 		});
-		btnEliminarArticulo.setBounds(325, 153, 81, 23);
+		btnEliminarArticulo.setBounds(386, 159, 81, 23);
 		contentPane.add(btnEliminarArticulo);
 
 		combo_cantidad = new JComboBox<String>();
-		combo_cantidad.setBounds(107, 153, 60, 20);
+		combo_cantidad.setBounds(126, 143, 60, 20);
 		contentPane.add(combo_cantidad);
 
-		JLabel lblArticulo = new JLabel("Art\u00EDculo");
+		JLabel lblArticulo = new JLabel("Art\u00EDculo:");
 		lblArticulo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblArticulo.setBounds(46, 121, 69, 19);
+		lblArticulo.setBounds(63, 111, 69, 19);
 		contentPane.add(lblArticulo);
 
-		JLabel lblCantidad_1 = new JLabel("Cantidad");
+		JLabel lblCantidad_1 = new JLabel("Cantidad:");
 		lblCantidad_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblCantidad_1.setBounds(35, 152, 69, 20);
+		lblCantidad_1.setBounds(54, 142, 69, 20);
 		contentPane.add(lblCantidad_1);
 
 		combo_dia = new JComboBox<String>();
-		combo_dia.setBounds(161, 77, 45, 20);
+		combo_dia.setBounds(126, 62, 45, 22);
 		contentPane.add(combo_dia);
 
 		combo_mes = new JComboBox<String>();
-		combo_mes.setBounds(226, 79, 81, 20);
+		combo_mes.setBounds(190, 62, 102, 22);
 		contentPane.add(combo_mes);
 
 		combo_anyo = new JComboBox<String>();
-		combo_anyo.setBounds(325, 79, 81, 20);
+		combo_anyo.setBounds(308, 62, 81, 22);
 		contentPane.add(combo_anyo);
 
-		mensaje_aviso = new JLabel("");
+		mensaje_aviso = new JLabel("", SwingConstants.CENTER);
 		mensaje_aviso.setForeground(Color.RED);
-		mensaje_aviso.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 11));
-		mensaje_aviso.setBounds(107, 340, 290, 24);
+		mensaje_aviso.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 12));
+		mensaje_aviso.setBounds(64, 350, 391, 24);
 		contentPane.add(mensaje_aviso);
+		
+		label_idTicket = new JLabel("", SwingConstants.LEFT);
+		label_idTicket.setFont(new Font("Microsoft New Tai Lue", Font.ITALIC, 12));
+		label_idTicket.setBounds(28, 11, 139, 24);
+		contentPane.add(label_idTicket);
 
 		//------------------Dialog----------------------
 		dialogo1 = new JDialog(this, "", true);
@@ -253,8 +275,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 		cantidad_total = 0.0;
 		lista_de_articulos = new ArrayList<String>();
-		lista_de_articulos_en_jlist = new ArrayList<String>();
-
+		
+		
+		idTicket = dame_idTicke();
+		label_idTicket.setText("REF. TICKET: "+idTicket);
+		
 		rellena_dias();
 		rellena_meses();
 		rellena_anyos();
@@ -363,44 +388,46 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		descompone_string = texto_lista.split("  --  ");	
 		return descompone_string[0];	
 	}
-	/*
-	public void actualiza_lista()
-	{
-		for (int i = 0; i < lista_de_articulos_en_jlist.size(); i++) 
-		{
-			lista.add(lista_de_articulos_en_jlist.get(i)); //AÑADIMOS A LA LISTA LA DESCRIPCIÓN LA CANTIDAD Y EL PRECIO, TENIENDO EN CUENTA ESTE ÚLTIMO SEGÚN LA CANTIDAD				
-		}
-	}
-	 */
+
 	public void agrega_articulo_a_la_lista()
 	{
+
 		mensaje_aviso.setText("");
+		cantidad_int = Integer.valueOf(combo_cantidad.getSelectedItem().toString());
+		
+		if(lista_de_articulos.contains(combo_articulo.getSelectedItem().toString()))
+		{
+			mensaje_aviso.setText("El artículo que está agregando ya existe.");
+		}
+		else
+		{
+			//-------	AGREGA A LA LISTA EL ELEMENTO SELECCIONADO  -----------
+			lista.add(combo_articulo.getSelectedItem().toString() + "  --  " + combo_cantidad.getSelectedItem().toString() + "  --  " + (String.format("%.2f", (dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int))+"€"));
 
-		//-----------AÑADE NOMBRE DE ARTÍCULO AL ARRAYLIST---------
-		//
-		//---------------------------------------------------------					
+			//-------	AGREGA AL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
+			lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
+			
+			//-------	AGREGA AL ARRAYLIST LA CANTIDAD DEL ELEMENTO  -----------
+			//lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
+			//lista_de_cantidades_de_articulos.add(cantidad_int);
 
-		//String cantidad = combo_cantidad.getSelectedItem().toString();
-		//cantidad_int = Integer.valueOf(cantidad); //OBTENEMOS LA CANTIDAD DEL ARTÍCULO QUE ESTAMOS AÑADIENDO	
-
-
-		//-------	AGREGA A LA LISTA EL ELEMENTO SELECCIONADO  -----------
-
-		lista.add(combo_articulo.getSelectedItem().toString() + "  --  " + combo_cantidad.getSelectedItem().toString() + "  --  " + (String.format("%.2f", (dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int))+"€"));
-
-		//-------	AGREGA AL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
-
-		lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
+			//----------AUMENTA TOTAL DE TICKET------------------------
+			cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
+			cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
+			//---------------------------------------------------------
+		}
 
 
-
-
-		//lista.add("Prueba");
-
-		//----------AUMENTA TOTAL DE TICKET------------------------
-		//cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
-		//cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
-		//---------------------------------------------------------
+		System.err.println("*****************");
+		System.err.println("*****************");
+		System.err.println("*****************");
+		for (int i = 0; i < lista_de_articulos.size(); i++) 
+		{
+			System.out.println(lista_de_articulos.get(i));
+		}
+		System.err.println("*****************");
+		System.err.println("*****************");
+		System.err.println("*****************");
 
 	}
 
@@ -408,151 +435,145 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 	public void elimina_articulo_de_lista()
 	{
-	
-		mensaje_aviso.setText("");
-
-		int indice = 0;
-		indice = lista.getSelectedIndex(); //RECOGEMOS EL INDICE DEL LA LÍNEA QUE TENEMOS SELECCIONADA EN EL LIST, YA QUE ESTÉ MÉTODO SI SE USA UNA VEZ, LUEGO YA NO DEVUELVE EL ÍNDICE QUE SE ENCUENTRA SELECCIONADO, POR LO QUE LO ALMACENAMOS PARA USARLO VARIAS VECES
-
-		
-	
-		//-------	ELIMINA DEL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
 
 		try
 		{
-			for (int i = 0; i < lista_de_articulos.size(); i++)
+			mensaje_aviso.setText("");
+			int indice = 0;
+			indice = lista.getSelectedIndex(); //RECOGEMOS EL INDICE DEL LA LÍNEA QUE TENEMOS SELECCIONADA EN EL LIST, YA QUE ESTÉ MÉTODO SI SE USA UNA VEZ, LUEGO YA NO DEVUELVE EL ÍNDICE QUE SE ENCUENTRA SELECCIONADO, POR LO QUE LO ALMACENAMOS PARA USARLO VARIAS VECES
+
+
+			//-------	DISMINUYE TICKET  -----------
+			disminuye_ticket(indice);
+
+
+			//-------	ELIMINA DEL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
+			try
 			{
-				if(devuelve_articulo_seleccionado_de_la_lista().equals(lista_de_articulos.get(i).toString()))
+				for (int i = 0; i < lista_de_articulos.size(); i++)
 				{
-					System.out.println("Coincide");
-					lista_de_articulos.remove(indice);
+					if(devuelve_articulo_seleccionado_de_la_lista().equals(lista_de_articulos.get(i).toString()))
+					{
+						lista_de_articulos.remove(indice);
+						//lista_de_cantidades_de_articulos.remove(indice); // ELIMINA DEL ARRAYLIST LA CANTIDAD DEL ARTÍCULO SELECCIONADO
+					}
 				}
 			}
-		}
-		catch(NullPointerException e)
+			catch(NullPointerException e)
+			{
+				System.err.println("Error al eliminar el elemento del ArrayList.");
+			}
+
+
+			//-------	ELIMINA DE LA LISTA EL ELEMENTO SELECCIONADO  -----------
+			try 
+			{
+				lista.remove(indice);
+
+			} catch (ArrayIndexOutOfBoundsException e) {
+
+				System.err.println("Error al eliminar el elemento seleccionado de la lista.");
+				mensaje_aviso.setText("Selecciona el archivo que quieres eliminar");
+			}
+
+		} catch (Exception e)
 		{
-			System.err.println("Error al eliminar el elemento del ArrayList.");
-		}
-	
-		
-
-		//-------	ELIMINA DE LA LISTA EL ELEMENTO SELECCIONADO  -----------
-		try 
-		{
-			lista.remove(indice);
-
-		} catch (ArrayIndexOutOfBoundsException e) {
-
-			System.err.println("Error al eliminar el elemento seleccionado de la lista.");
-			mensaje_aviso.setText("Selecciona el archivo que quieres eliminar");
+			System.err.println("Elemento a eliminar no seleccionado");
+			mensaje_aviso.setText("Elemento a eliminar no seleccionado.");
 		}
 
-		
-		
-		
-		System.out.println(indice);
 
+
+		System.out.println("*****************");
+		System.out.println("*****************");
 		System.out.println("*****************");
 		for (int i = 0; i < lista_de_articulos.size(); i++) 
 		{
 			System.out.println(lista_de_articulos.get(i));
-
 		}
 		System.out.println("*****************");
-		
-		
-		
-		/*
-
-		/*
-
-		//-------	ELIMINA DEL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
-
-		for (int i = 0; i < lista_de_articulos.size(); i++) 
-		{
-			if((lista.getItem(indice)).equals(lista_de_articulos.get(i)))
-			{
-				lista_de_articulos.remove(i+1);
-			}
-
-		}
-
 		System.out.println("*****************");
-		for (int i = 0; i < lista_de_articulos.size(); i++) 
-		{
-			System.out.println(lista_de_articulos.get(i));
-
-		}
 		System.out.println("*****************");
-		/*
 
-		String texto_lista = lista.getSelectedItem().toString();
-		String [] descompone_string;
-		descompone_string = texto_lista.split("  --  ");	
-		descompone_string[0];
-		 */
-
-		/*
-
-
-		/*
-		if(lista_de_articulos_en_jlist.size() == 0) 
-		{
-			System.out.println("No hay elementos");
-		}
-		else {
-			for (int i = 0; i < lista_de_articulos_en_jlist.size(); i++) 
-			{
-				if(lista.getSelectedItem().equals(lista_de_articulos_en_jlist.get(i)))
-				{
-					lista_de_articulos_en_jlist.remove(i);
-				}
-			}
-		}
-		 */
-
-
-
-
-
-		/*
-		//---------------------------------------------------------	
-		System.out.println(lista.getSelectedItem().toString());
-		for (int i = 0; i < lista_de_articulos_en_jlist.size(); i++) 
-		{
-			System.out.println(lista_de_articulos_en_jlist.get(i));
-		}
-		for (int i = 0; i < lista_de_articulos_en_jlist.size(); i++) 
-		{
-			if(lista_de_articulos_en_jlist.get(i).equals(lista.getSelectedItem().toString()))
-			{		
-				lista.remove(lista.getSelectedItem());;
-			}
-		}
-		actualiza_lista();
-		//AÑADIMOS A LA LISTA LA DESCRIPCIÓN LA CANTIDAD Y EL PRECIO, TENIENDO EN CUENTA ESTE ÚLTIMO SEGÚN LA CANTIDAD		
-		/*
-			for (int i = 0; i < lista_de_articulos_en_jlist.size(); i++) 
-			{
-				if (lista_de_articulos_en_jlist.get(i).equals(lista.getSelectedItem().toString()))
-				{
-					lista_de_articulos.remove(i);
-				}
-			}
-			String cantidad = combo_cantidad.getSelectedItem().toString();
-			cantidad_int = Integer.valueOf(cantidad); //OBTENEMOS LA CANTIDAD DEL ARTÍCULO QUE ESTAMOS AÑADIENDO	
-			lista_de_articulos_en_jlist.add(combo_articulo.getSelectedItem().toString() + "  --  " + combo_cantidad.getSelectedItem().toString() + "  --  " + (String.format("%.2f", (dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int))+"€"));
-			actualiza_lista();
-			//----------AUMENTA TOTAL DE TICKET------------------------
-			cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
-			cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
 	}
-	else 
+
+
+	public int devuelve_mes(String mes)
 	{
-		//---------------------------------------------------------
-		mensaje_aviso.setText("El artículo que desea eliminar no existe.");	
-		actualiza_lista();
+
+		String mes_del_anyo = mes;
+		switch (mes_del_anyo)
+		{
+		case "Enero":
+			return 1;
+		case "Febrero":
+			return 2;
+		case "Marzo":
+			return 3;
+		case "Abril":
+			return 4;
+		case "Mayo":
+			return 5;
+		case "Junio":
+			return 6;
+		case "Julio":
+			return 7;
+		case "Agosto":
+			return 8;
+		case "Septiembre":
+			return 9;
+		case "Octubre":
+			return 10;
+		case "Noviembre":
+			return 11;
+		case "Diciembre":
+			return 12;
+		default:
+			return 0;
+		}
 	}
-		 */
+
+	public void disminuye_ticket(int linea_seleccionada)
+	{
+		int indice = linea_seleccionada;
+
+		String array = lista.getItem(indice);
+		String[] string_cantidad_con_simbolo = array.split("  --  ");
+		String string_cantidad_sin_simbolo = string_cantidad_con_simbolo[2];
+		string_cantidad_sin_simbolo = string_cantidad_sin_simbolo.substring(0, string_cantidad_sin_simbolo.length()-1);
+		String cantidad_con_punto = string_cantidad_sin_simbolo.replaceAll(",",".");
+
+		double cantidad_double = Double.parseDouble(cantidad_con_punto);
+
+		cantidad_total -= cantidad_double;
+
+		if(cantidad_total<0)
+		{
+			cantidad_total = 0;
+		}
+
+		cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
+
+	}
+	
+	public long dame_idTicke() {
+		
+		resultset_idTicket = Conecta_BBDD.obtener_objetos("SELECT idTicket FROM tickets ORDER BY idTicket DESC;");
+		long id_nuevo_ticket = 0;
+		
+		try
+		{
+			resultset_idTicket.first();
+			id_nuevo_ticket = resultset_idTicket.getInt(1);
+			
+			
+		} catch (SQLException e)
+		{
+			System.out.println("Error al obtener el id del ticket de la base de datos.");
+		}
+		
+		
+		return id_nuevo_ticket+1;
+		
 	}
 }
