@@ -31,19 +31,19 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Conecta_BBDD base_datos = new Conecta_BBDD();
+	private Conecta_BBDD base_datos;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JLabel lblPrecio;
+	private JTextField textfieldDescripcion;
+	private JTextField textfieldPrecio;
+	private JTextField textfieldCantidad;
+	private JLabel labelPrecio;
 	private JLabel label;
-	private JLabel lblCantidad;
-	private JLabel lblNuevoArtculo;
-	private JButton button;
-	private JButton button_1;
-	private JLabel lblSeleccionarArtculo;
-	private JComboBox<String> comboBox;
+	private JLabel labelCantidad;
+	private JLabel labelModificarArticulo;
+	private JButton buttonCancelar;
+	private JButton buttonGuardar;
+	private JLabel labelSeleccionarArticulo;
+	private JComboBox<String> comboArticulo;
 	private JDialog dialogo1;
 	private Panel panel1;
 	private Panel panel2;
@@ -57,6 +57,8 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 	 */
 	public Modificar_Articulo()
 	{
+		base_datos = new Conecta_BBDD();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 500, 470);
 		contentPane = new JPanel();
@@ -64,85 +66,86 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblDescripcin = new JLabel("Descripci\u00F3n:");
-		lblDescripcin.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblDescripcin.setBounds(121, 160, 88, 24);
-		contentPane.add(lblDescripcin);
+		JLabel labelDescripcin = new JLabel("Descripci\u00F3n:");
+		labelDescripcin.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+		labelDescripcin.setBounds(121, 160, 88, 24);
+		contentPane.add(labelDescripcin);
 
-		textField = new JTextField();
-		textField.setBounds(251, 160, 153, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textfieldDescripcion = new JTextField();
+		textfieldDescripcion.setBounds(251, 160, 153, 24);
+		contentPane.add(textfieldDescripcion);
+		textfieldDescripcion.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(252, 211, 72, 24);
-		contentPane.add(textField_1);
+		textfieldPrecio = new JTextField();
+		textfieldPrecio.setColumns(10);
+		textfieldPrecio.setBounds(252, 211, 72, 24);
+		contentPane.add(textfieldPrecio);
 
-		lblPrecio = new JLabel("Precio:");
-		lblPrecio.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblPrecio.setBounds(154, 211, 53, 24);
-		contentPane.add(lblPrecio);
+		labelPrecio = new JLabel("Precio:");
+		labelPrecio.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+		labelPrecio.setBounds(154, 211, 53, 24);
+		contentPane.add(labelPrecio);
 
 		label = new JLabel("\u20AC");
 		label.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
 		label.setBounds(328, 211, 25, 24);
 		contentPane.add(label);
 
-		lblCantidad = new JLabel("Cantidad:");
-		lblCantidad.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblCantidad.setBounds(140, 260, 63, 24);
-		contentPane.add(lblCantidad);
+		labelCantidad = new JLabel("Cantidad:");
+		labelCantidad.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+		labelCantidad.setBounds(140, 260, 63, 24);
+		contentPane.add(labelCantidad);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(251, 260, 73, 24);
-		contentPane.add(textField_2);
+		textfieldCantidad = new JTextField();
+		textfieldCantidad.setColumns(10);
+		textfieldCantidad.setBounds(251, 260, 73, 24);
+		contentPane.add(textfieldCantidad);
 
-		lblNuevoArtculo = new JLabel("MODIFICAR ART\u00CDCULO");
-		lblNuevoArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblNuevoArtculo.setBounds(169, 11, 150, 24);
-		contentPane.add(lblNuevoArtculo);
+		labelModificarArticulo = new JLabel("MODIFICAR ART\u00CDCULO");
+		labelModificarArticulo.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
+		labelModificarArticulo.setBounds(169, 11, 170, 24);
+		contentPane.add(labelModificarArticulo);
 
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setBounds(10, 38, 468, 2);
 		contentPane.add(separator);
 
-		button = new JButton("Cancelar");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		buttonCancelar = new JButton("Cancelar");
+		buttonCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
 				Modificar_Articulo.this.setVisible(false);
 				Modificar_Articulo.this.dispose();
 			}
 		});
-		button.setBounds(292, 397, 89, 23);
-		contentPane.add(button);
+		buttonCancelar.setBounds(292, 397, 89, 23);
+		contentPane.add(buttonCancelar);
 
-		button_1 = new JButton("Guardar");
-		button_1.addActionListener(new ActionListener() {
+		buttonGuardar = new JButton("Guardar");
+		buttonGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(!comboBox.getSelectedItem().equals("Elegir uno..."))
+				if(!comboArticulo.getSelectedItem().equals("Elegir uno..."))
 				{
-					String sentencia_modificar_podologo = "UPDATE articulos SET descripcionArticulo = '" + textField.getText() + "', precioArticulo = " + textField_1.getText() + ", stockArticulo = " + textField_2.getText() + " WHERE descripcionArticulo = '"+ nombre_articulo +"';";
+					String sentencia_modificar_podologo = "UPDATE articulos SET descripcionArticulo = '" + textfieldDescripcion.getText() + "', precioArticulo = " + textfieldPrecio.getText() + ", stockArticulo = " + textfieldCantidad.getText() + " WHERE descripcionArticulo = '"+ nombre_articulo +"';";
 					System.out.println(sentencia_modificar_podologo);
-					Conecta_BBDD.agregar_objeto(sentencia_modificar_podologo);
+					base_datos.agregar_objeto(sentencia_modificar_podologo);
 					dialogo1.setVisible(true);
 				}	
 			}
 		});
-		button_1.setBounds(389, 397, 89, 23);
-		contentPane.add(button_1);
+		buttonGuardar.setBounds(389, 397, 89, 23);
+		contentPane.add(buttonGuardar);
 
-		lblSeleccionarArtculo = new JLabel("Seleccionar Art\u00EDculo: ");
-		lblSeleccionarArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblSeleccionarArtculo.setBounds(66, 110, 153, 24);
-		contentPane.add(lblSeleccionarArtculo);
+		labelSeleccionarArticulo = new JLabel("Seleccionar Art\u00EDculo: ");
+		labelSeleccionarArticulo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+		labelSeleccionarArticulo.setBounds(66, 110, 153, 24);
+		contentPane.add(labelSeleccionarArticulo);
 
-		comboBox = new JComboBox<String>();
-		comboBox.setBounds(250, 112, 154, 20);
-		contentPane.add(comboBox);
+		comboArticulo = new JComboBox<String>();
+		comboArticulo.setBounds(250, 112, 154, 20);
+		contentPane.add(comboArticulo);
 
 		//------------------Dialog------------------------------
 		dialogo1 = new JDialog(this, "", true);
@@ -163,6 +166,8 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		dialogo1.getContentPane().add(BorderLayout.CENTER, panel2);
 		btn_dialogo_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				base_datos.cierra_conexion();
 				dialogo1.setVisible(false);
 				Modificar_Articulo.this.dispose();
 				new Modificar_Articulo().setVisible(true);
@@ -171,11 +176,11 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		//--------------------------------------------------------
 		
 		//-------------RELLENA JCOMBOBOX DE ARTICULOS-------------
-		comboBox.addItem("Elegir uno...");
+		comboArticulo.addItem("Elegir uno...");
 		rellena_jcombobox_articulos();
 		//--------------------------------------------------------
 
-		comboBox.addItemListener( this);
+		comboArticulo.addItemListener( this);
 		this.addWindowListener(this);
 		this.setResizable(false);
 		this.setVisible(false);
@@ -190,6 +195,7 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 
 	public void windowClosing(WindowEvent e)
 	{
+		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
@@ -207,13 +213,13 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 
 	public void rellena_jcombobox_articulos()
 	{
-		resultset1 = Conecta_BBDD.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
-
+		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
+		
 		try //USAMOS UN WHILE PARA RELLENAR EL JCOMBOX CON LOS RESULTADOS DEL RESULSET
 		{
 			while(resultset1.next())
 			{
-				comboBox.addItem(resultset1.getString("descripcionArticulo"));
+				comboArticulo.addItem(resultset1.getString("descripcionArticulo"));
 			}
 		} catch (SQLException e)
 		{
@@ -228,9 +234,9 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		{
 			while(resultset2.next())
 			{
-				textField.setText(resultset2.getString("descripcionArticulo"));
-				textField_1.setText(resultset2.getString("precioArticulo"));
-				textField_2.setText(resultset2.getString("stockArticulo"));
+				textfieldDescripcion.setText(resultset2.getString("descripcionArticulo"));
+				textfieldPrecio.setText(resultset2.getString("precioArticulo"));
+				textfieldCantidad.setText(resultset2.getString("stockArticulo"));
 
 			}
 		} catch (SQLException e)
@@ -242,17 +248,17 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 	@Override
 	public void itemStateChanged(ItemEvent ie)
 	{
-		if(ie.getStateChange()==1 && (!comboBox.getSelectedItem().equals("Elegir uno...")))  // LA PRIMERA CONDICIÓN SIRVE PARA SOLUCIONAR EL PROBLEMA DE QUE EL JCOMBOBOX SE LLAME DOS VECES CON EL ITEMLISTENER, CON LOS CHOICE NO OCURRE ESTE PROBLEMA
+		if(ie.getStateChange()==1 && (!comboArticulo.getSelectedItem().equals("Elegir uno...")))  // LA PRIMERA CONDICIÓN SIRVE PARA SOLUCIONAR EL PROBLEMA DE QUE EL JCOMBOBOX SE LLAME DOS VECES CON EL ITEMLISTENER, CON LOS CHOICE NO OCURRE ESTE PROBLEMA
 		{
 			nombre_articulo = (String)ie.getItem();
 			System.out.println("SELECT * FROM articulos WHERE descripcionArticulo = '" + nombre_articulo +"';");
-			resultset2 = Conecta_BBDD.obtener_objetos("SELECT * FROM articulos WHERE descripcionArticulo = '" + (String)ie.getItem() +"';"); //ACTUALIZA EL RESULTSET
+			resultset2 = base_datos.obtener_objetos("SELECT * FROM articulos WHERE descripcionArticulo = '" + (String)ie.getItem() +"';"); //ACTUALIZA EL RESULTSET
 			rellena_todos_los_campos();
 		}else
 		{
-			textField.setText("");
-			textField_1.setText("");
-			textField_2.setText("");
+			textfieldDescripcion.setText("");
+			textfieldPrecio.setText("");
+			textfieldCantidad.setText("");
 		}
 	}	
 }

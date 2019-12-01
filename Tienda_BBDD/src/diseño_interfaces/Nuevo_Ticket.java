@@ -56,10 +56,9 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	private ResultSet resultset1;
 	private ResultSet resultset2;
 	private ResultSet resultset_idTicket;
-	private ResultSet resultset_idArticulo;
 	long idTicket;
 	private double cantidad_total;
-	private Conecta_BBDD base_datos = new Conecta_BBDD();
+	private Conecta_BBDD base_datos;
 	private ArrayList<String> lista_de_articulos;
 	private ArrayList<Integer> lista_de_cantidades_de_articulos;
 	private JLabel mensaje_aviso;
@@ -71,9 +70,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	 */
 	public Nuevo_Ticket()
 	{
+
+		base_datos = new Conecta_BBDD();
+
 		lista_de_cantidades_de_articulos = new ArrayList<Integer>();
-		
-		
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 512, 471);
 		contentPane = new JPanel();
@@ -97,19 +98,19 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		contentPane.add(lblFechaTicket);
 
 		lblCantidad = new JLabel("Precio Total: ", SwingConstants.CENTER);
-		lblCantidad.setForeground(Color.RED);
+		lblCantidad.setForeground(Color.BLUE);
 		lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCantidad.setBounds(42, 375, 125, 24);
+		lblCantidad.setBounds(42, 397, 125, 24);
 		contentPane.add(lblCantidad);
 
 		cantidadTotalTicket = new JLabel("0€", SwingConstants.LEFT);
-		cantidadTotalTicket.setForeground(Color.RED);
+		cantidadTotalTicket.setForeground(Color.BLUE);
 		cantidadTotalTicket.setFont(new Font("Tahoma", Font.BOLD, 15));
-		cantidadTotalTicket.setBounds(157, 375, 111, 24);
+		cantidadTotalTicket.setBounds(157, 397, 135, 24);
 		contentPane.add(cantidadTotalTicket);
 
 		lista = new List();
-		lista.setBounds(53, 188, 414, 162);
+		lista.setBounds(53, 210, 414, 162);
 		contentPane.add(lista);
 
 		combo_articulo = new JComboBox<String> ();
@@ -123,7 +124,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 				agrega_articulo_a_la_lista();
 			}
 		});
-		btnAgregarArticulo.setBounds(302, 159, 74, 23);
+		btnAgregarArticulo.setBounds(290, 181, 86, 23);
 		contentPane.add(btnAgregarArticulo);
 
 		JLabel label = new JLabel("/");
@@ -149,64 +150,85 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		contentPane.add(lblAnyo);
 
 		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				System.out.println("INSERT INTO tickets (fechaTicket, articulosTicket, totalTicket) VALUES ('"+ combo_anyo.getSelectedItem().toString() + "-"+ devuelve_mes(combo_mes.getSelectedItem().toString()) + "-" + combo_dia.getSelectedItem().toString() +"', "+ lista_de_articulos.size() + ", " + (float)cantidad_total + ");");
-
-				
-				
-				//----------- OBTIENE EL ID DE TODOS LOS OJETOS DE LA LISTA ---------------
-				for (int i = 0; i < lista_de_articulos.size(); i++)
+		btnGuardar.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				mensaje_aviso.setText(""); //LIMPIA EL MENSAJE
+				if(lista_de_articulos.size() > 0) //COMPROBAMOS QUE HAYA ALGÚN ARTÍCULO EN LA LISTA
 				{
-					
-					System.out.println("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';");
-					resultset_idArticulo = Conecta_BBDD.obtener_objetos("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';");
+					//----------- AGREGAR EL TICKET A LA BBDD  ---------------
 					try
 					{
-						resultset_idArticulo.first();
-						int idArticulo = resultset_idArticulo.getInt(1);	
-						System.out.println("El id del articulo es: " + idArticulo);
-						
-						//+" Y la cantidad de dicho artículo es: " + lista_de_cantidades_de_articulos.get(i) );
-						
-						//System.out.println("INSERT INTO contiene ( idArticuloFK, idTicketFK, cantidadArticulo) VALUES (" + idArticulo +", " + idTicket +", " + lista_de_cantidades_de_articulos.get(i) + ");");
+						String sentencia_agregar_ticket = "INSERT INTO tickets (fechaTicket, articulosTicket, totalTicket) VALUES ('"+ combo_anyo.getSelectedItem().toString() + "-"+ devuelve_mes(combo_mes.getSelectedItem().toString()) + "-" + combo_dia.getSelectedItem().toString() +"', "+ lista_de_articulos.size() + ", " + (float)cantidad_total + ");";
+						if (base_datos.agregar_fecha_ticket(sentencia_agregar_ticket) == true)//AGREGA EL TICKET A LA BBDD SI LA FECHA ES CORRECTA
+						{
+							//----------- OBTIENE EL ID DE TODOS LOS OJETOS DE LA LISTA LA CANTIDAD Y LOS AGREGA AL TICKET EN LA BD ---------------
+							for (int i = 0; i < lista_de_articulos.size(); i++)
+							{
+								System.out.println("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';"); //OBTIENE ID DEL ARTICULO
+								ResultSet resultset_insertaArticulos = base_datos.obtener_objetos("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ lista_de_articulos.get(i) +"';");
 
-						//Conecta_BBDD.agregar_objeto("INSERT INTO contiene ( idArticuloFK, idTicketFK, cantidadArticulo) VALUES (" + idArticulo +", " + idTicket +", " + lista_de_cantidades_de_articulos.get(i) + ");");
-						
-						
-					} catch (SQLException e1)
+								try
+								{
+									resultset_insertaArticulos.first();
+									System.out.println("El id del articulo es: " + resultset_insertaArticulos.getInt(1) +" Y la cantidad de dicho artículo es: " + lista_de_cantidades_de_articulos.get(i) );
+
+									//----------- AGREGA LOS ARTICULOS AL TICKET CORRESPONDIENTE  ---------------		
+									String sentencia_agregar_articulos_al_ticket = "INSERT INTO contiene ( idArticuloFK, idTicketFK, cantidadArticulo) VALUES (" + resultset_insertaArticulos.getInt(1) +", " + idTicket +", " + lista_de_cantidades_de_articulos.get(i) + ");";							
+									base_datos.agregar_objeto(sentencia_agregar_articulos_al_ticket);		
+									base_datos.agregar_objeto("UPDATE articulos SET stockArticulo = stockArticulo - " + lista_de_cantidades_de_articulos.get(i) + " WHERE idArticulo = " + resultset_insertaArticulos.getInt(1) + ";"); //BAJA EL STOCK DEL ARTÍCULO
+
+								} catch (SQLException e2)
+								{
+									mensaje_aviso.setText("Error al agregar los artículos al ticket en la BBDD.");
+									e2.printStackTrace();
+								}
+								
+							}
+							dialogo1.setVisible(true);
+						}
+						else
+						{
+							mensaje_aviso.setText("La fecha elegida no es correcta.");
+						}
+
+					} catch (Exception e1)
 					{
-						System.out.println("Error al capturar el id de un artículo de la lista");
+						mensaje_aviso.setText("Introduzca una fecha válida para el ticket.");
 						e1.printStackTrace();
-					}
-					
-					
-				}		
-				
-				//dialogo1.setVisible(true);
+					}			
+				}	
+				else
+				{
+					mensaje_aviso.setText("Debe introducir al menos un artículo en el ticket.");
+				}
+
 			}
 		});
-		btnGuardar.setBounds(391, 398, 89, 23);
+		btnGuardar.setBounds(386, 400, 81, 23);
 		contentPane.add(btnGuardar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnCancelar.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				Nuevo_Ticket.this.dispose();
 			}
 		});
-		btnCancelar.setBounds(292, 398, 89, 23);
+		btnCancelar.setBounds(290, 400, 88, 23);
 		contentPane.add(btnCancelar);
 
 		JButton btnEliminarArticulo = new JButton("Eliminar");
-		btnEliminarArticulo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
+		btnEliminarArticulo.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				elimina_articulo_de_lista();
 			}
 		});
-		btnEliminarArticulo.setBounds(386, 159, 81, 23);
+		btnEliminarArticulo.setBounds(386, 181, 81, 23);
 		contentPane.add(btnEliminarArticulo);
 
 		combo_cantidad = new JComboBox<String>();
@@ -238,17 +260,43 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		mensaje_aviso = new JLabel("", SwingConstants.CENTER);
 		mensaje_aviso.setForeground(Color.RED);
 		mensaje_aviso.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 12));
-		mensaje_aviso.setBounds(64, 350, 391, 24);
+		mensaje_aviso.setBounds(64, 372, 391, 24);
 		contentPane.add(mensaje_aviso);
-		
+
 		label_idTicket = new JLabel("", SwingConstants.LEFT);
-		label_idTicket.setFont(new Font("Microsoft New Tai Lue", Font.ITALIC, 12));
+		label_idTicket.setForeground(Color.RED);
+		label_idTicket.setFont(new Font("Microsoft New Tai Lue", Font.BOLD | Font.ITALIC, 12));
 		label_idTicket.setBounds(28, 11, 139, 24);
 		contentPane.add(label_idTicket);
 
 		//------------------Dialog----------------------
 		dialogo1 = new JDialog(this, "", true);
 		mensaje1 = new JLabel("Ticket creado con éxito.");
+		dialogo1.addWindowListener(new WindowListener() 
+		{
+
+			public void windowActivated(WindowEvent e)
+			{}
+			public void windowClosed(WindowEvent e)
+			{}
+			public void windowClosing(WindowEvent e)
+			{
+				dialogo1.setVisible(false);
+				base_datos.cierra_conexion();
+				Nuevo_Ticket.this.dispose();
+				
+				
+			}
+			public void windowDeactivated(WindowEvent e)
+			{}
+			public void windowDeiconified(WindowEvent e)
+			{}
+			public void windowIconified(WindowEvent e)
+			{}
+			public void windowOpened(WindowEvent e)
+			{}
+		});
+
 		dialogo1.getContentPane().setLayout(new BorderLayout());
 		dialogo1.setSize(500, 470);
 		dialogo1.setResizable(false);
@@ -266,7 +314,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		btn_dialogo_1.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) {
+
 				dialogo1.setVisible(false);
+				base_datos.cierra_conexion();
+				Nuevo_Ticket.this.dispose();
+
 			}
 
 		});
@@ -275,11 +327,17 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 		cantidad_total = 0.0;
 		lista_de_articulos = new ArrayList<String>();
-		
-		
+
+
 		idTicket = dame_idTicke();
-		label_idTicket.setText("REF. TICKET: "+idTicket);
-		
+		label_idTicket.setText("REF. TICKET: " + idTicket);
+
+		JLabel lblListaCompra = new JLabel("--LISTA DE ART\u00CDCULOS--", SwingConstants.CENTER);
+		lblListaCompra.setForeground(Color.GRAY);
+		lblListaCompra.setFont(new Font("Microsoft New Tai Lue", Font.BOLD | Font.ITALIC, 12));
+		lblListaCompra.setBounds(124, 190, 139, 24);
+		contentPane.add(lblListaCompra);
+
 		rellena_dias();
 		rellena_meses();
 		rellena_anyos();
@@ -294,12 +352,13 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	{}
 
 	public void windowClosed(WindowEvent e)
-	{
-		this.dispose();	
-	}
+	{}
 
 	public void windowClosing(WindowEvent e)
-	{}
+	{
+		base_datos.cierra_conexion();
+		this.dispose();	
+	}
 
 	public void windowDeactivated(WindowEvent e)
 	{}
@@ -349,7 +408,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	}
 	public void rellena_articulos()
 	{
-		resultset1 = Conecta_BBDD.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
+		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
 
 		try //USAMOS UN WHILE PARA RELLENAR EL JCOMBOX CON LOS RESULTADOS DEL RESULSET
 		{
@@ -367,7 +426,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	{
 		String articulo = articulo_seleccionado;
 		double precio_articulo = 0.0;
-		resultset2 = Conecta_BBDD.obtener_objetos("SELECT precioArticulo FROM articulos WHERE descripcionArticulo = '" + articulo + "';");	
+		resultset2 = base_datos.obtener_objetos("SELECT precioArticulo FROM articulos WHERE descripcionArticulo = '" + articulo + "';");	
 		try
 		{
 			while(resultset2.next())
@@ -394,7 +453,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 		mensaje_aviso.setText("");
 		cantidad_int = Integer.valueOf(combo_cantidad.getSelectedItem().toString());
-		
+
 		if(lista_de_articulos.contains(combo_articulo.getSelectedItem().toString()))
 		{
 			mensaje_aviso.setText("El artículo que está agregando ya existe.");
@@ -406,32 +465,17 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 			//-------	AGREGA AL ARRAYLIST EL ELEMENTO SELECCIONADO  -----------
 			lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
-			
+
 			//-------	AGREGA AL ARRAYLIST LA CANTIDAD DEL ELEMENTO  -----------
-			//lista_de_articulos.add(combo_articulo.getSelectedItem().toString());
-			//lista_de_cantidades_de_articulos.add(cantidad_int);
+			lista_de_cantidades_de_articulos.add(cantidad_int);
 
 			//----------AUMENTA TOTAL DE TICKET------------------------
 			cantidad_total += dame_precio_articulo(combo_articulo.getSelectedItem().toString()) * cantidad_int ; //AUMENTA EL VALOR DEL TICKET CON EL PRECIO SELECCIONADO, TENIENDO EN CUENTA PRECIO Y CANTIDAD SELECIONADA DEL ARTÍCULO
-			cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
+			cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€")); 
 			//---------------------------------------------------------
 		}
 
-
-		System.err.println("*****************");
-		System.err.println("*****************");
-		System.err.println("*****************");
-		for (int i = 0; i < lista_de_articulos.size(); i++) 
-		{
-			System.out.println(lista_de_articulos.get(i));
-		}
-		System.err.println("*****************");
-		System.err.println("*****************");
-		System.err.println("*****************");
-
 	}
-
-
 
 	public void elimina_articulo_de_lista()
 	{
@@ -455,7 +499,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 					if(devuelve_articulo_seleccionado_de_la_lista().equals(lista_de_articulos.get(i).toString()))
 					{
 						lista_de_articulos.remove(indice);
-						//lista_de_cantidades_de_articulos.remove(indice); // ELIMINA DEL ARRAYLIST LA CANTIDAD DEL ARTÍCULO SELECCIONADO
+						lista_de_cantidades_de_articulos.remove(indice); // ELIMINA DEL ARRAYLIST LA CANTIDAD DEL ARTÍCULO SELECCIONADO
 					}
 				}
 			}
@@ -478,23 +522,8 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 		} catch (Exception e)
 		{
-			System.err.println("Elemento a eliminar no seleccionado");
 			mensaje_aviso.setText("Elemento a eliminar no seleccionado.");
 		}
-
-
-
-		System.out.println("*****************");
-		System.out.println("*****************");
-		System.out.println("*****************");
-		for (int i = 0; i < lista_de_articulos.size(); i++) 
-		{
-			System.out.println(lista_de_articulos.get(i));
-		}
-		System.out.println("*****************");
-		System.out.println("*****************");
-		System.out.println("*****************");
-
 	}
 
 
@@ -555,25 +584,25 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		cantidadTotalTicket.setText((String.format("%.2f", cantidad_total)+"€"));
 
 	}
-	
+
 	public long dame_idTicke() {
-		
-		resultset_idTicket = Conecta_BBDD.obtener_objetos("SELECT idTicket FROM tickets ORDER BY idTicket DESC;");
+
+		resultset_idTicket = base_datos.obtener_objetos("SELECT idTicket FROM tickets ORDER BY idTicket DESC;");
 		long id_nuevo_ticket = 0;
-		
+
 		try
 		{
 			resultset_idTicket.first();
 			id_nuevo_ticket = resultset_idTicket.getInt(1);
-			
-			
+
+
 		} catch (SQLException e)
 		{
 			System.out.println("Error al obtener el id del ticket de la base de datos.");
 		}
-		
-		
+
+
 		return id_nuevo_ticket+1;
-		
+
 	}
 }

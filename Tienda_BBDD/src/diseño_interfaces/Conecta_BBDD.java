@@ -36,15 +36,12 @@ public class  Conecta_BBDD
 		}
 	}
 
-	public static void agregar_objeto(String sentencia)
+	public void agregar_objeto(String sentencia)
 	{
 		try
 		{
 			statement=connection.createStatement();
-			statement.executeUpdate(sentencia);
-			statement.close();
-			connection.close();
-			
+			statement.executeUpdate(sentencia);		
 		}
 		catch(SQLException e)
 		{
@@ -52,7 +49,7 @@ public class  Conecta_BBDD
 		}
 	}
 
-	public static ResultSet obtener_objetos(String sentencia)
+	public ResultSet obtener_objetos(String sentencia)
 	{
 		try
 		{
@@ -64,6 +61,35 @@ public class  Conecta_BBDD
 		{
 			System.out.println("Error en la sentencia SQL");
 			return rs;
+		}
+	}
+	
+	public boolean agregar_fecha_ticket(String sentencia)
+	{
+		try
+		{
+			statement=connection.createStatement();
+			statement.executeUpdate(sentencia);		
+			return true;
+			
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error en la sentencia SQL");
+			return false;
+		}
+	}
+	
+	public void cierra_conexion()
+	{
+		try
+		{
+			statement.close();
+			connection.close();	
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error al cerrar la conexión");	
 		}
 	}
 }

@@ -30,7 +30,7 @@ public class Principal extends JFrame implements ActionListener
 	private Ver_Articulos ver_articulos = new Ver_Articulos();
 	private Nuevo_Ticket nuevo_ticket = new Nuevo_Ticket();
 	private Ver_Tickets ver_tickets = new Ver_Tickets();
-	private Conecta_BBDD base_datos = new Conecta_BBDD();
+
 	
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu mnNewMenu = new JMenu("Art\u00EDculos");
@@ -70,7 +70,7 @@ public class Principal extends JFrame implements ActionListener
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 470);
+		setBounds(100, 100, 512, 471);
 
 		this.setTitle("TIENDA");
 		setJMenuBar(menuBar);

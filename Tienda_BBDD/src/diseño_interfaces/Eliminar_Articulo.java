@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -21,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
 
 public class Eliminar_Articulo extends JFrame implements WindowListener
 {
@@ -30,9 +30,9 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel lblNuevoArtculo;
-	private JButton button;
-	private JButton button_1;
+	private JLabel labelEliminarArticulo;
+	private JButton buttonCancelar;
+	private JButton buttonEliminar;
 	private JDialog dialogo1;
 	private Panel panel1;
 	private Panel panel2;
@@ -40,13 +40,16 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 	private JButton btn_dialogo_1;
 	private JButton btn_dialogo_2;
 	private ResultSet resultset1;
-	private JComboBox<String> comboBox;
-	private Conecta_BBDD base_datos = new Conecta_BBDD();
+	private JComboBox<String> comboArticulo;
+	private Conecta_BBDD base_datos;
+	private JLabel label;
 	/**
 	 * Create the frame.
 	 */
 	public Eliminar_Articulo()
 	{
+		base_datos = new Conecta_BBDD();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 500, 470);
 		contentPane = new JPanel();
@@ -54,37 +57,56 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		lblNuevoArtculo = new JLabel("ELIMINAR ART\u00CDCULO");
-		lblNuevoArtculo.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
-		lblNuevoArtculo.setBounds(176, 11, 150, 24);
-		contentPane.add(lblNuevoArtculo);
+		labelEliminarArticulo = new JLabel("ELIMINAR ART\u00CDCULO");
+		labelEliminarArticulo.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
+		labelEliminarArticulo.setBounds(164, 11, 176, 24);
+		contentPane.add(labelEliminarArticulo);
 
-		comboBox = new JComboBox<String>();
-		comboBox.setBounds(150, 63, 186, 20);
-		contentPane.add(comboBox);
+		comboArticulo = new JComboBox<String>();
+		comboArticulo.setBounds(150, 63, 186, 20);
+		contentPane.add(comboArticulo);
 
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setBounds(10, 38, 468, 2);
 		contentPane.add(separator);
 
-		button = new JButton("Cancelar");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Eliminar_Articulo.this.setVisible(false);
+		buttonCancelar = new JButton("Cancelar");
+		buttonCancelar.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				base_datos.cierra_conexion();
+				Eliminar_Articulo.this.dispose();
+				new Eliminar_Articulo();
 			}
 		});
-		button.setBounds(286, 397, 89, 23);
-		contentPane.add(button);
+		buttonCancelar.setBounds(286, 397, 89, 23);
+		contentPane.add(buttonCancelar);
 
-		button_1 = new JButton("Eliminar");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dialogo1.setVisible(true);
+		buttonEliminar = new JButton("Eliminar");
+		buttonEliminar.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{			
+				if(comboArticulo.getSelectedItem().toString().equals("Elegir uno..."))
+				{			
+					label.setText("Seleccione un artículo a eliminar.");
+				}
+				else
+				{
+					dialogo1.setVisible(true);
+				}			
 			}
 		});
-		button_1.setBounds(385, 397, 89, 23);
-		contentPane.add(button_1);
+		buttonEliminar.setBounds(385, 397, 89, 23);
+		contentPane.add(buttonEliminar);
+
+		label = new JLabel("", SwingConstants.CENTER);
+		label.setForeground(Color.RED);
+		label.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 12));
+		label.setBounds(10, 94, 468, 24);
+		contentPane.add(label);
 
 		//------------------Dialog----------------------
 		dialogo1 = new JDialog(this, "", true);
@@ -105,26 +127,48 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 		panel2.add(btn_dialogo_2);
 		dialogo1.getContentPane().add(BorderLayout.NORTH, panel1);
 		dialogo1.getContentPane().add(BorderLayout.CENTER, panel2);
-		btn_dialogo_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btn_dialogo_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				dialogo1.setVisible(false);
 			}
 		});
-		btn_dialogo_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String sentencia_eliminar_podologo = "DELETE FROM articulos WHERE descripcionArticulo = '"+ comboBox.getSelectedItem().toString() + "';";
-				System.out.println(sentencia_eliminar_podologo);
-				Conecta_BBDD.agregar_objeto(sentencia_eliminar_podologo);
-				dialogo1.setVisible(false);
-				Eliminar_Articulo.this.dispose();
-				new Eliminar_Articulo().setVisible(true);
+		btn_dialogo_2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				try
+				{
+					//---------- ELIMINAR ARTÍCULO DE TODOS LOS TICKETS EN DONDE ES FK ---------------
+
+					ResultSet idArticulo = base_datos.obtener_objetos("SELECT idArticulo FROM articulos WHERE descripcionArticulo = '"+ comboArticulo.getSelectedItem().toString() + "';");
+					idArticulo.next();
+					base_datos.agregar_objeto("DELETE FROM contiene WHERE idArticuloFK = '" + idArticulo.getInt(1) + "';");
+	
+
+					//---------- ELIMINAR ARTÍCULO ---------------
+					String sentencia_eliminar_articulo = "DELETE FROM articulos WHERE descripcionArticulo = '"+ comboArticulo.getSelectedItem().toString() + "';";
+					System.out.println(sentencia_eliminar_articulo);
+					base_datos.agregar_objeto(sentencia_eliminar_articulo);
+					
+					
+					base_datos.cierra_conexion();
+					dialogo1.setVisible(false);
+					Eliminar_Articulo.this.dispose();
+					new Eliminar_Articulo().setVisible(true);
+
+				} catch (SQLException e1)
+				{
+					System.out.println(e1);
+					label.setText("Error al eliminar el artículo");
+				}		
 			}
 		});
 		//------------------------------------------------
 
 		//-------------RELLENA JCOMBOBOX DE ARTICULOS-------------
-		comboBox.addItem("Elegir uno...");
+		comboArticulo.addItem("Elegir uno...");
 		rellena_jcombobox_articulos();
 		//--------------------------------------------------------
 
@@ -138,6 +182,7 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 
 	public void windowClosed(WindowEvent e)
 	{
+		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
@@ -159,13 +204,13 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 
 	public void rellena_jcombobox_articulos()
 	{
-		resultset1 = Conecta_BBDD.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
+		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");	
 
 		try //USAMOS UN WHILE PARA RELLENAR EL JCOMBOX CON LOS RESULTADOS DEL RESULSET
 		{
 			while(resultset1.next())
 			{
-				comboBox.addItem(resultset1.getString("descripcionArticulo"));
+				comboArticulo.addItem(resultset1.getString("descripcionArticulo"));
 			}
 		} catch (SQLException e)
 		{

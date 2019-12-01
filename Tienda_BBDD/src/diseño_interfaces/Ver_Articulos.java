@@ -31,7 +31,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	private JPanel contentPane;
 	private JTable tabla;
 	private ResultSet resultset;
-	private Conecta_BBDD base_datos = new Conecta_BBDD();
+	private Conecta_BBDD base_datos;
 	private DefaultTableModel modelo;
 	private DefaultTableCellRenderer tcr;
 	/**
@@ -39,6 +39,8 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	 */
 	public Ver_Articulos()
 	{
+		base_datos = new Conecta_BBDD();
+		
         setBounds(100, 100, 500, 470);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,7 +61,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
         
         //CREAMOS UN JSCROLLPANE Y LE AÑADIMOS UN JTABLE
         JScrollPane scrollPane = new JScrollPane(tabla);
-        scrollPane.setBounds(37, 68, 407, 311);
+        scrollPane.setBounds(37, 68, 417, 311);
         
         //AGREGAMOS EL SCROLL
         getContentPane().add(scrollPane);
@@ -77,7 +79,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
         contentPane.add(separator);
         
         JLabel lblArtculos = new JLabel("ART\u00CDCULOS");
-        lblArtculos.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 15));
+        lblArtculos.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
         lblArtculos.setBounds(206, 11, 90, 24);
         contentPane.add(lblArtculos);
         
@@ -85,10 +87,11 @@ public class Ver_Articulos extends JFrame implements WindowListener
         button.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e)
         	{
+        		base_datos.cierra_conexion();
         		Ver_Articulos.this.dispose();
         	}
         });
-        button.setBounds(355, 397, 89, 23);
+        button.setBounds(365, 390, 89, 23);
         contentPane.add(button);
         
         rellena_tabla();
@@ -105,6 +108,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
 
 	public void windowClosed(WindowEvent e)
 	{
+		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
@@ -126,8 +130,8 @@ public class Ver_Articulos extends JFrame implements WindowListener
 	public void rellena_tabla()
 	{
 
-		resultset = Conecta_BBDD.obtener_objetos("SELECT * FROM articulos ORDER BY 2;");
-
+		resultset = base_datos.obtener_objetos("SELECT * FROM articulos ORDER BY 2;");
+	
 		try 
 		{
 			while(resultset.next())//USAMOS UN WHILE PARA RELLENAR LA TABLA
