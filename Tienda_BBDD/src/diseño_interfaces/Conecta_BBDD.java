@@ -16,6 +16,12 @@ public class  Conecta_BBDD
 	private static Statement statement = null;
 	private static ResultSet rs = null;
 
+	
+	//Prueba 
+	
+	
+	
+	
 	public Conecta_BBDD()
 	{
 		try
