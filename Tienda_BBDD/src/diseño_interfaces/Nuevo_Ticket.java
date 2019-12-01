@@ -284,7 +284,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 				dialogo1.setVisible(false);
 				base_datos.cierra_conexion();
 				Nuevo_Ticket.this.dispose();
-				
+								
 				
 			}
 			public void windowDeactivated(WindowEvent e)
@@ -318,6 +318,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 				dialogo1.setVisible(false);
 				base_datos.cierra_conexion();
 				Nuevo_Ticket.this.dispose();
+				new Nuevo_Ticket().setVisible(true);
 
 			}
 
