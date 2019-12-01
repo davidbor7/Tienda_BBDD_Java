@@ -15,7 +15,6 @@ import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -600,6 +599,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		} catch (SQLException e)
 		{
 			System.out.println("Error al obtener el id del ticket de la base de datos.");
+			System.out.println("O bien no existe todavía ningún ticket en la base de datos.");
 		}
 
 

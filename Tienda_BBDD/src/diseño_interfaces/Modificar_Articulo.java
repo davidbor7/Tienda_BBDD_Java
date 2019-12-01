@@ -128,7 +128,7 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 			{
 				if(!comboArticulo.getSelectedItem().equals("Elegir uno..."))
 				{
-					String sentencia_modificar_podologo = "UPDATE articulos SET descripcionArticulo = '" + textfieldDescripcion.getText() + "', precioArticulo = " + textfieldPrecio.getText() + ", stockArticulo = " + textfieldCantidad.getText() + " WHERE descripcionArticulo = '"+ nombre_articulo +"';";
+					String sentencia_modificar_podologo = "UPDATE articulos SET descripcionArticulo = '" + textfieldDescripcion.getText() + "', precioArticulo = " + comprueba_cantidad(textfieldPrecio.getText()) + ", stockArticulo = " + textfieldCantidad.getText() + " WHERE descripcionArticulo = '"+ nombre_articulo +"';";
 					System.out.println(sentencia_modificar_podologo);
 					base_datos.agregar_objeto(sentencia_modificar_podologo);
 					dialogo1.setVisible(true);
@@ -261,4 +261,45 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 			textfieldCantidad.setText("");
 		}
 	}	
+	
+	public float comprueba_cantidad(String precio)
+	{
+		String precio_articulo = precio;
+		char[] array_caracteres = precio_articulo.toCharArray();
+		String precio_factorizado = "";
+		String string_precio_dos_decimales = "";
+		boolean llave = true;
+
+		for (int i = 0; i < array_caracteres.length; i++)
+		{
+			if (array_caracteres[i] == ',')
+			{
+				precio_factorizado += ".";
+			}
+			else
+			{
+				precio_factorizado += array_caracteres[i];
+			}
+		}
+
+		for (int i = 0; i < precio_factorizado.length(); i++)
+		{
+			if(llave)
+			{
+				if(precio_factorizado.charAt(i) == '.')
+				{
+					string_precio_dos_decimales += precio_factorizado.charAt(i);
+					string_precio_dos_decimales += precio_factorizado.charAt(i+1);
+					string_precio_dos_decimales += precio_factorizado.charAt(i+2); //ESTO PUEDE DAR PROBLEMAS SI EL NUMERO INTRODUCIDO POR EL USUARIO TIENE MENOS DE DOS DECIMALES, CORREGIR EN FUTURAS VERSIONES
+					llave = false;
+				}
+				else
+				{
+					string_precio_dos_decimales += precio_factorizado.charAt(i);
+
+				}
+			}
+		} 
+		return Float.valueOf(string_precio_dos_decimales);
+	}
 }
