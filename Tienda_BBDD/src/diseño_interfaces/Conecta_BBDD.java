@@ -17,11 +17,6 @@ public class  Conecta_BBDD
 	private static ResultSet rs = null;
 
 	
-	//Prueba 
-	
-	//
-	
-	
 	public Conecta_BBDD()
 	{
 		try
