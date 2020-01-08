@@ -91,7 +91,7 @@ public class Informe_Tickets extends JFrame {
 
 			// Compilar el informe generando fichero jasper
 			JasperCompileManager.compileReportToFile("tickets.jrxml");
-			System.out.println("Fichero articulos.jasper generado CORRECTAMENTE!");
+			System.out.println("Fichero tickets.jasper generado CORRECTAMENTE!");
 
 			// Objeto para guardar parámetros necesarios para el informe
 			HashMap<String,Object> parametros = new HashMap<String,Object>();
