@@ -154,6 +154,7 @@ public class Principal extends JFrame implements ActionListener
 								if(ae.getSource().equals(mntmNewMenuItem_6))
 								{		
 									Informe_Articulos informe_Articulos = new Informe_Articulos();
+									informe_Articulos.abre_informe();
 
 								}else
 								{
