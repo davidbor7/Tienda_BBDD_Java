@@ -41,6 +41,9 @@ public class Principal extends JFrame implements ActionListener
 	private JMenu mnTickets = new JMenu("Tickets");
 	private JMenuItem mntmNewMenuItem_4 = new JMenuItem("Nuevo Ticket");
 	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("Ver Tickets");
+	private JMenu mnInformes = new JMenu("Informes");
+	private JMenuItem mntmNewMenuItem_6 = new JMenuItem("Generar Informe Artículos...");
+	private JMenuItem mntmNewMenuItem_7 = new JMenuItem("Generar Informe Tickets...");
 
 	/**
 	 * Launch the application.
@@ -82,6 +85,9 @@ public class Principal extends JFrame implements ActionListener
 		menuBar.add(mnTickets);
 		mnTickets.add(mntmNewMenuItem_4);
 		mnTickets.add(mntmNewMenuItem_5);
+		menuBar.add(mnInformes);
+		mnInformes.add(mntmNewMenuItem_6);
+		mnInformes.add(mntmNewMenuItem_7);
 
 
 		mntmNewMenuItem.addActionListener(this);
@@ -90,6 +96,8 @@ public class Principal extends JFrame implements ActionListener
 		mntmNewMenuItem_3.addActionListener(this);
 		mntmNewMenuItem_4.addActionListener(this);
 		mntmNewMenuItem_5.addActionListener(this);
+		mntmNewMenuItem_6.addActionListener(this);
+		mntmNewMenuItem_7.addActionListener(this);
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -141,6 +149,20 @@ public class Principal extends JFrame implements ActionListener
 								ver_tickets = new Ver_Tickets();
 								ver_tickets.setVisible(true);
 
+							}else
+							{
+								if(ae.getSource().equals(mntmNewMenuItem_6))
+								{		
+									Informe_Articulos informe_Articulos = new Informe_Articulos();
+
+								}else
+								{
+									if(ae.getSource().equals(mntmNewMenuItem_7))
+									{
+										
+
+									}
+								}
 							}
 						}
 					}
