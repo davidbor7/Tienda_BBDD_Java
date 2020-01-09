@@ -93,8 +93,13 @@ public class Informe_Tickets extends JFrame
 				abre_informe();
 			}
 		});
-		btnNewButton.setBounds(110, 110, 89, 23);
+		btnNewButton.setBounds(110, 125, 89, 23);
 		contentPane.add(btnNewButton);
+		
+		JLabel lblFormatDdmmaaaa = new JLabel("Date Format: DD/MM/YYYY");
+		lblFormatDdmmaaaa.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblFormatDdmmaaaa.setBounds(88, 100, 147, 14);
+		contentPane.add(lblFormatDdmmaaaa);
 	}
 	
 	public void abre_informe()
@@ -164,6 +169,4 @@ public class Informe_Tickets extends JFrame
 		
 		return fechaSQL;	
 }
-
-	
 }
