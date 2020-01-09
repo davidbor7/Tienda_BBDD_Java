@@ -109,8 +109,8 @@ public class Informe_Tickets extends JFrame
 			HashMap<String,Object> parametros = new HashMap<String,Object>();
 			
 			// Parámetro que enviamos al Report
-			parametros.put("fechaDesde", textField.getText());		
-			parametros.put("fechaHasta", textField_1.getText());
+			parametros.put("fechaDesde", cambiarFormatoFecha(textField.getText()));		
+			parametros.put("fechaHasta", cambiarFormatoFecha(textField_1.getText()));
 	
 			// Cargar el informe compilado
 			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("tickets.jasper");
@@ -145,4 +145,25 @@ public class Informe_Tickets extends JFrame
 			System.out.println("Error: " + e.toString());
 		}	
 	}
+	
+	public String cambiarFormatoFecha(String fecha)	
+	{
+		String fechaEuropa = fecha;
+		String fechaSQL = "";	
+		
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-4);
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-3);
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-2);
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-1);
+		fechaSQL = fechaSQL + "/";
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-7);
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-6);
+		fechaSQL = fechaSQL + "/";
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-10);
+		fechaSQL = fechaSQL + fechaEuropa.charAt(fechaEuropa.length()-9);
+		
+		return fechaSQL;	
+}
+
+	
 }
