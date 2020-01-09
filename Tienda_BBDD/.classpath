@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/mysql-connector-java-5.1.46.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/commons.collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/commons-beanutils-1.9.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/commons-digester-2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/groovy-all-2.4.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/itextpdf-5.5.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/itext-pdfa-5.5.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Studium/Desktop/Nueva carpeta/jasperreports-6.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/mysql-connector-java-5.1.46.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/commons.collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/commons-beanutils-1.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/groovy-all-2.4.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/itextpdf-5.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/itext-pdfa-5.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/david/Desktop/Jar JasperReport/jasperreports-6.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

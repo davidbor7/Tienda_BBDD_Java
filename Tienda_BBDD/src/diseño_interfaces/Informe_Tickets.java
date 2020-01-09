@@ -11,7 +11,9 @@ import java.sql.DriverManager;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -20,11 +22,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-public class Informe_Tickets extends JFrame {
+public class Informe_Tickets extends JFrame
+{
 
 	/**
 	 * 
@@ -33,7 +36,7 @@ public class Informe_Tickets extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -65,30 +68,39 @@ public class Informe_Tickets extends JFrame {
 		
 		JLabel lblFechaInicio = new JLabel("Fecha Desde:");
 		lblFechaInicio.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
-		lblFechaInicio.setBounds(27, 36, 108, 22);
+		lblFechaInicio.setBounds(55, 21, 108, 22);
 		contentPane.add(lblFechaInicio);
 		
 		JLabel lblFechaHasta = new JLabel("Fecha Hasta:");
 		lblFechaHasta.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 15));
-		lblFechaHasta.setBounds(30, 79, 108, 22);
+		lblFechaHasta.setBounds(58, 64, 108, 22);
 		contentPane.add(lblFechaHasta);
 		
 		textField = new JTextField();
-		textField.setBounds(145, 37, 108, 20);
+		textField.setBounds(173, 22, 80, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(145, 80, 108, 20);
+		textField_1.setBounds(173, 65, 80, 20);
 		contentPane.add(textField_1);
+		
+		JButton btnNewButton = new JButton("Generar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				abre_informe();
+			}
+		});
+		btnNewButton.setBounds(110, 110, 89, 23);
+		contentPane.add(btnNewButton);
 	}
 	
 	public void abre_informe()
 	{
 		try
 		{			
-
 			// Compilar el informe generando fichero jasper
 			JasperCompileManager.compileReportToFile("tickets.jrxml");
 			System.out.println("Fichero tickets.jasper generado CORRECTAMENTE!");
@@ -97,8 +109,8 @@ public class Informe_Tickets extends JFrame {
 			HashMap<String,Object> parametros = new HashMap<String,Object>();
 			
 			// Parámetro que enviamos al Report
-			parametros.put("parametro1", textField.getText());		
-			parametros.put("parametro2", textField_1.getText());
+			parametros.put("fechaDesde", textField.getText());		
+			parametros.put("fechaHasta", textField_1.getText());
 	
 			// Cargar el informe compilado
 			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("tickets.jasper");
