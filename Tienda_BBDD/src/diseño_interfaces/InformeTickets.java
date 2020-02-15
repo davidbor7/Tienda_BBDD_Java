@@ -150,6 +150,7 @@ public class InformeTickets extends JFrame
 	}
 
 	/**
+	 * 
 	 * Change European date format to SQL format
 	 *
 	 * @param String the string in European format
