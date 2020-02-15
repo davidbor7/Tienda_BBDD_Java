@@ -5,7 +5,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.HashMap;
-
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -13,9 +12,20 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 
-public class Informe_Articulos {
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InformeArticulos. This class generate items reports.
+ * 
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class InformeArticulos {
 
-	public Informe_Articulos() 
+	/**
+	 * Instantiates a new informe articulos
+	 */
+	public InformeArticulos() 
 	{
 
 		abre_informe();
@@ -23,6 +33,9 @@ public class Informe_Articulos {
 	}
 
 
+	/**
+	 * Open PDF Articulos
+	 */
 	public void abre_informe()
 	{
 		try

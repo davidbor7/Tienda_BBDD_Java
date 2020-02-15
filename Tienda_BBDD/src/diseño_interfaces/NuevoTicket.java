@@ -26,55 +26,120 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 
-public class Nuevo_Ticket extends JFrame implements WindowListener
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NuevoTicket. This class create new tickets.
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class NuevoTicket extends JFrame implements WindowListener
 {
 
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The content pane. */
 	private JPanel contentPane;
+	
+	/** The lbl cantidad. */
 	private JLabel lblCantidad;
+	
+	/** The lbl nuevo artculo. */
 	private JLabel lblNuevoArtculo;
+	
+	/** The dialogo 1. */
 	private JDialog dialogo1;
+	
+	/** The panel 1. */
 	private Panel panel1;
+	
+	/** The panel 2. */
 	private Panel panel2;
+	
+	/** The mensaje 1. */
 	private JLabel mensaje1;
+	
+	/** The btn dialogo 1. */
 	private JButton btn_dialogo_1;
+	
+	/** The separator. */
 	private JSeparator separator;
+	
+	/** The lbl fecha ticket. */
 	private JLabel lblFechaTicket;
+	
+	/** The cantidad total ticket. */
 	private JLabel cantidadTotalTicket;
+	
+	/** The lista. */
 	private List lista;
+	
+	/** The combo articulo. */
 	private JComboBox<String> combo_articulo;
+	
+	/** The btn agregar articulo. */
 	private JButton btnAgregarArticulo;
+	
+	/** The combo cantidad. */
 	private JComboBox<String> combo_cantidad;
+	
+	/** The combo dia. */
 	private JComboBox<String> combo_dia;
+	
+	/** The combo mes. */
 	private JComboBox<String> combo_mes;
+	
+	/** The combo anyo. */
 	private JComboBox<String> combo_anyo;
+	
+	/** The resultset 1. */
 	private ResultSet resultset1;
+	
+	/** The resultset 2. */
 	private ResultSet resultset2;
+	
+	/** The resultset id ticket. */
 	private ResultSet resultset_idTicket;
+	
+	/** The id ticket. */
 	long idTicket;
+	
+	/** The cantidad total. */
 	private double cantidad_total;
-	private Conecta_BBDD base_datos;
+	
+	/** The base datos. */
+	private ConectaBBDD base_datos;
+	
+	/** The lista de articulos. */
 	private ArrayList<String> lista_de_articulos;
+	
+	/** The lista de cantidades de articulos. */
 	private ArrayList<Integer> lista_de_cantidades_de_articulos;
+	
+	/** The mensaje aviso. */
 	private JLabel mensaje_aviso;
+	
+	/** The llave. */
 	boolean llave = false;
+	
+	/** The cantidad int. */
 	private int cantidad_int;
+	
+	/** The label id ticket. */
 	private JLabel label_idTicket;
 	/**
 	 * Create the frame.
 	 */
-	public Nuevo_Ticket()
+	public NuevoTicket()
 	{
 
-		base_datos = new Conecta_BBDD();
+		base_datos = new ConectaBBDD();
 
 		lista_de_cantidades_de_articulos = new ArrayList<Integer>();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(NuevoArticulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 512, 471);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -213,7 +278,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Nuevo_Ticket.this.dispose();
+				NuevoTicket.this.dispose();
 			}
 		});
 		btnCancelar.setBounds(290, 400, 88, 23);
@@ -282,7 +347,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 			{
 				dialogo1.setVisible(false);
 				base_datos.cierra_conexion();
-				Nuevo_Ticket.this.dispose();
+				NuevoTicket.this.dispose();
 								
 				
 			}
@@ -316,8 +381,8 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 				dialogo1.setVisible(false);
 				base_datos.cierra_conexion();
-				Nuevo_Ticket.this.dispose();
-				new Nuevo_Ticket().setVisible(true);
+				NuevoTicket.this.dispose();
+				new NuevoTicket().setVisible(true);
 
 			}
 
@@ -329,7 +394,7 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		lista_de_articulos = new ArrayList<String>();
 
 
-		idTicket = dame_idTicke();
+		idTicket = dame_idTicket();
 		label_idTicket.setText("REF. TICKET: " + idTicket);
 
 		JLabel lblListaCompra = new JLabel("--LISTA DE ART\u00CDCULOS--", SwingConstants.CENTER);
@@ -348,30 +413,68 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		this.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Window activated.
+	 *
+	 * @param e the e
+	 */
 	public void windowActivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window closed.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosed(WindowEvent e)
 	{}
 
+	/**
+	 * Window closing.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosing(WindowEvent e)
 	{
 		base_datos.cierra_conexion();
 		this.dispose();	
 	}
 
+	/**
+	 * Window deactivated.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeactivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window deiconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeiconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window iconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowIconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window opened.
+	 *
+	 * @param e the e
+	 */
 	public void windowOpened(WindowEvent e)
 	{}
 
+	/**
+	 * Fill JComboBox days.
+	 */
 	public void rellena_dias()
 	{	
 		for (int i = 0; i < 31; i++)
@@ -379,6 +482,10 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 			combo_dia.addItem(""+(i+1));
 		}	
 	}
+	
+	/**
+	 *  Fill JComboBox months.
+	 */
 	public void rellena_meses()
 	{
 		String [] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
@@ -389,6 +496,10 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		}
 
 	}
+	
+	/**
+	 * Fill JComboBox years..
+	 */
 	public void rellena_anyos()
 	{
 
@@ -399,6 +510,9 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		combo_anyo.setSelectedIndex(119);
 	}
 
+	/**
+	 * Fill JComboBox quantity.
+	 */
 	public void rellena_cantidad()
 	{	
 		for (int i = 0; i < 20; i++)
@@ -406,6 +520,10 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 			combo_cantidad.addItem(""+(i+1));
 		}
 	}
+	
+	/**
+	 * Fill JComboBox items..
+	 */
 	public void rellena_articulos()
 	{
 		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
@@ -422,6 +540,12 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		}
 	}
 
+	/**
+	 * Get item price.
+	 *
+	 * @param articulo_seleccionado the articulo seleccionado
+	 * @return the double
+	 */
 	public double dame_precio_articulo(String articulo_seleccionado)
 	{
 		String articulo = articulo_seleccionado;
@@ -440,6 +564,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		return precio_articulo;
 	}
 
+	/**
+	 * Get item select in list
+	 *
+	 * @return the string
+	 */
 	public String devuelve_articulo_seleccionado_de_la_lista()
 	{	
 		String texto_lista = lista.getSelectedItem().toString();
@@ -448,6 +577,9 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		return descompone_string[0];	
 	}
 
+	/**
+	 * Add item to list
+	 */
 	public void agrega_articulo_a_la_lista()
 	{
 
@@ -477,6 +609,9 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 	}
 
+	/**
+	 * Delete item in list
+	 */
 	public void elimina_articulo_de_lista()
 	{
 
@@ -527,6 +662,12 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 	}
 
 
+	/**
+	 * Get month
+	 *
+	 * @param mes the month
+	 * @return the int
+	 */
 	public int devuelve_mes(String mes)
 	{
 
@@ -562,6 +703,11 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 		}
 	}
 
+	/**
+	 * Decrease ticket
+	 *
+	 * @param linea_seleccionada the select line
+	 */
 	public void disminuye_ticket(int linea_seleccionada)
 	{
 		int indice = linea_seleccionada;
@@ -585,7 +731,12 @@ public class Nuevo_Ticket extends JFrame implements WindowListener
 
 	}
 
-	public long dame_idTicke() {
+	/**
+	 * Get id Ticket
+	 *
+	 * @return the ticket id
+	 */
+	public long dame_idTicket() {
 
 		resultset_idTicket = base_datos.obtener_objetos("SELECT idTicket FROM tickets ORDER BY idTicket DESC;");
 		long id_nuevo_ticket = 0;

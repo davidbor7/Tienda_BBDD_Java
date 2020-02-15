@@ -6,18 +6,42 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class  Conecta_BBDD
+
+/**
+ * The Class ConectaBBDD.
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class  ConectaBBDD
 {
+	
+	/** The driver. */
 	private String driver = "com.mysql.jdbc.Driver";
+	
+	/** The url. */
 	private String url ="jdbc:mysql://localhost:3306/tienda?autoReconnect=true&useSSL=false";
+	
+	/** The login. */
 	private String login = "root";
+	
+	/** The password. */
 	private String password = "Studium2019;";
+	
+	/** The connection. */
 	private static Connection connection = null;
+	
+	/** The statement. */
 	private static Statement statement = null;
+	
+	/** The resultset. */
 	private static ResultSet rs = null;
 
 	
-	public Conecta_BBDD()
+	/**
+	 * Instantiates a new conecta BBDD.
+	 */
+	public ConectaBBDD()
 	{
 		try
 		{
@@ -37,6 +61,11 @@ public class  Conecta_BBDD
 		}
 	}
 
+	/**
+	 * Add Object.
+	 *
+	 * @param sentencia the query
+	 */
 	public void agregar_objeto(String sentencia)
 	{
 		try
@@ -50,6 +79,12 @@ public class  Conecta_BBDD
 		}
 	}
 
+	/**
+	 * Get Objects
+	 *
+	 * @param sentencia the query
+	 * @return the result set
+	 */
 	public ResultSet obtener_objetos(String sentencia)
 	{
 		try
@@ -65,6 +100,12 @@ public class  Conecta_BBDD
 		}
 	}
 	
+	/**
+	 * Add ticket date
+	 *
+	 * @param sentencia the query
+	 * @return true, if successful
+	 */
 	public boolean agregar_fecha_ticket(String sentencia)
 	{
 		try
@@ -81,6 +122,9 @@ public class  Conecta_BBDD
 		}
 	}
 	
+	/**
+	 * Close connection with database.
+	 */
 	public void cierra_conexion()
 	{
 		try

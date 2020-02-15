@@ -19,39 +19,78 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class Nuevo_Articulo extends JFrame implements WindowListener
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NuevoArticulo. This class create new items.
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class NuevoArticulo extends JFrame implements WindowListener
 {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The content pane. */
 	private JPanel contentPane;
+	
+	/** The textfield descripcion. */
 	private JTextField textfieldDescripcion;
+	
+	/** The textfield precio. */
 	private JTextField textfieldPrecio;
+	
+	/** The label precio. */
 	private JLabel labelPrecio;
+	
+	/** The label moneda. */
 	private JLabel labelMoneda;
+	
+	/** The label cantidad. */
 	private JLabel labelCantidad;
+	
+	/** The textfield cantidad. */
 	private JTextField textfieldCantidad;
+	
+	/** The label nuevo articulo. */
 	private JLabel labelNuevoArticulo;
+	
+	/** The button cancelar. */
 	private JButton buttonCancelar;
+	
+	/** The button guardar. */
 	private JButton buttonGuardar;
+	
+	/** The dialogo 1. */
 	private JDialog dialogo1;
+	
+	/** The panel 1. */
 	private Panel panel1;
+	
+	/** The panel 2. */
 	private Panel panel2;
+	
+	/** The mensaje 1. */
 	private JLabel mensaje1;
+	
+	/** The btn dialogo 1. */
 	private JButton btn_dialogo_1;
+	
+	/** The separator. */
 	private JSeparator separator;
-	private Conecta_BBDD base_datos;
+	
+	/** The base datos. */
+	private ConectaBBDD base_datos;
 
 	/**
 	 * Create the frame.
 	 */
-	public Nuevo_Articulo()
+	public NuevoArticulo()
 	{
-		base_datos = new Conecta_BBDD();
+		base_datos = new ConectaBBDD();
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(NuevoArticulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 500, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -108,8 +147,8 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 			public void actionPerformed(ActionEvent e) 
 			{
 				base_datos.cierra_conexion();
-				Nuevo_Articulo.this.setVisible(false);
-				Nuevo_Articulo.this.dispose();
+				NuevoArticulo.this.setVisible(false);
+				NuevoArticulo.this.dispose();
 				
 			}
 		});
@@ -151,8 +190,8 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 			public void actionPerformed(ActionEvent e) 
 			{			
 				base_datos.cierra_conexion();
-				Nuevo_Articulo.this.dispose();
-				new Nuevo_Articulo().setVisible(true);
+				NuevoArticulo.this.dispose();
+				new NuevoArticulo().setVisible(true);
 			}
 		});
 		//------------------------------------------------
@@ -162,6 +201,12 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		this.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Check quantity
+	 *
+	 * @param precio the price
+	 * @return the float
+	 */
 	public float comprueba_cantidad(String precio)
 	{
 		String precio_articulo = precio;
@@ -203,27 +248,62 @@ public class Nuevo_Articulo extends JFrame implements WindowListener
 		return Float.valueOf(string_precio_dos_decimales);
 	}
 
+	/**
+	 * Window activated.
+	 *
+	 * @param e the e
+	 */
 	public void windowActivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window closed.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosed(WindowEvent e)
 	{}
 
+	/**
+	 * Window closing.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosing(WindowEvent e)
 	{
 		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
+	/**
+	 * Window deactivated.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeactivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window deiconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeiconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window iconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowIconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window opened.
+	 *
+	 * @param e the e
+	 */
 	public void windowOpened(WindowEvent e)
 	{}
 }

@@ -6,11 +6,21 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Principal.
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
 public class Principal extends JFrame implements ActionListener
 {
 
 	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The content pane. */
 	private JPanel contentPane = new JPanel() {
 		
 		private static final long serialVersionUID = 1L;
@@ -24,29 +34,65 @@ public class Principal extends JFrame implements ActionListener
 		}
 	};
 	
-	private Nuevo_Articulo nuevo_articulo;
-	private Eliminar_Articulo eliminar_articulo = new Eliminar_Articulo();
-	private Modificar_Articulo modificar_articulo;
-	private Ver_Articulos ver_articulos = new Ver_Articulos();
-	private Nuevo_Ticket nuevo_ticket = new Nuevo_Ticket();
-	private Ver_Tickets ver_tickets = new Ver_Tickets();
+	/** The nuevo articulo. */
+	private NuevoArticulo nuevo_articulo;
+	
+	/** The eliminar articulo. */
+	private EliminarArticulo eliminar_articulo = new EliminarArticulo();
+	
+	/** The modificar articulo. */
+	private ModificarArticulo modificar_articulo;
+	
+	/** The ver articulos. */
+	private VerArticulos ver_articulos = new VerArticulos();
+	
+	/** The nuevo ticket. */
+	private NuevoTicket nuevo_ticket = new NuevoTicket();
+	
+	/** The ver tickets. */
+	private VerTickets ver_tickets = new VerTickets();
 
 	
+	/** The menu bar. */
 	private JMenuBar menuBar = new JMenuBar();
+	
+	/** The mn new menu. */
 	private JMenu mnNewMenu = new JMenu("Art\u00EDculos");
+	
+	/** The mntm new menu item. */
 	private JMenuItem mntmNewMenuItem = new JMenuItem("Nuevo Art\u00EDculo");
+	
+	/** The mntm new menu item 1. */
 	private JMenuItem mntmNewMenuItem_1 = new JMenuItem("Eliminar Art\u00EDculo");
+	
+	/** The mntm new menu item 2. */
 	private JMenuItem mntmNewMenuItem_2 = new JMenuItem("Modificar Art\u00EDculo");
+	
+	/** The mntm new menu item 3. */
 	private JMenuItem mntmNewMenuItem_3 = new JMenuItem("Ver Art\u00EDculos");
+	
+	/** The mn tickets. */
 	private JMenu mnTickets = new JMenu("Tickets");
+	
+	/** The mntm new menu item 4. */
 	private JMenuItem mntmNewMenuItem_4 = new JMenuItem("Nuevo Ticket");
+	
+	/** The mntm new menu item 5. */
 	private JMenuItem mntmNewMenuItem_5 = new JMenuItem("Ver Tickets");
+	
+	/** The mn informes. */
 	private JMenu mnInformes = new JMenu("Informes");
+	
+	/** The mntm new menu item 6. */
 	private JMenuItem mntmNewMenuItem_6 = new JMenuItem("Generar Informe Artículos...");
+	
+	/** The mntm new menu item 7. */
 	private JMenuItem mntmNewMenuItem_7 = new JMenuItem("Generar Informe Tickets...");
 
 	/**
 	 * Launch the application.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args)
 	{
@@ -106,6 +152,11 @@ public class Principal extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Action performed.
+	 *
+	 * @param ae the ae
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ae)
 	{
@@ -113,54 +164,54 @@ public class Principal extends JFrame implements ActionListener
 
 		if(ae.getSource().equals(mntmNewMenuItem))
 		{	
-			nuevo_articulo = new Nuevo_Articulo();
+			nuevo_articulo = new NuevoArticulo();
 			nuevo_articulo.setVisible(true);
 
 		}else
 		{
 			if(ae.getSource().equals(mntmNewMenuItem_1))
 			{		
-				eliminar_articulo = new Eliminar_Articulo();
+				eliminar_articulo = new EliminarArticulo();
 				eliminar_articulo.setVisible(true);
 			}else
 			{
 				if(ae.getSource().equals(mntmNewMenuItem_2))
 				{		
-					modificar_articulo = new Modificar_Articulo();
+					modificar_articulo = new ModificarArticulo();
 					modificar_articulo.setVisible(true);
 
 				}else
 				{
 					if(ae.getSource().equals(mntmNewMenuItem_3))
 					{			
-						ver_articulos = new Ver_Articulos();
+						ver_articulos = new VerArticulos();
 						ver_articulos.setVisible(true);
 					}else
 					{
 						if(ae.getSource().equals(mntmNewMenuItem_4))
 						{		
-							nuevo_ticket = new Nuevo_Ticket();
+							nuevo_ticket = new NuevoTicket();
 							nuevo_ticket.setVisible(true);
 
 						}else
 						{
 							if(ae.getSource().equals(mntmNewMenuItem_5))
 							{
-								ver_tickets = new Ver_Tickets();
+								ver_tickets = new VerTickets();
 								ver_tickets.setVisible(true);
 
 							}else
 							{
 								if(ae.getSource().equals(mntmNewMenuItem_6))
 								{		
-									Informe_Articulos informe_Articulos = new Informe_Articulos();
+									InformeArticulos informe_Articulos = new InformeArticulos();
 									informe_Articulos.abre_informe();
 
 								}else
 								{
 									if(ae.getSource().equals(mntmNewMenuItem_7))
 									{
-										Informe_Tickets informe_Tickets = new Informe_Tickets();
+										InformeTickets informe_Tickets = new InformeTickets();
 										informe_Tickets.setVisible(true);
 									}
 								}

@@ -22,35 +22,68 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
 
-public class Eliminar_Articulo extends JFrame implements WindowListener
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EliminarArticulo. 
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class EliminarArticulo extends JFrame implements WindowListener
 {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The content pane. */
 	private JPanel contentPane;
+	
+	/** The label eliminar articulo. */
 	private JLabel labelEliminarArticulo;
+	
+	/** The button cancelar. */
 	private JButton buttonCancelar;
+	
+	/** The button eliminar. */
 	private JButton buttonEliminar;
+	
+	/** The dialogo 1. */
 	private JDialog dialogo1;
+	
+	/** The panel 1. */
 	private Panel panel1;
+	
+	/** The panel 2. */
 	private Panel panel2;
+	
+	/** The mensaje 1. */
 	private JLabel mensaje1;
+	
+	/** The btn dialogo 1. */
 	private JButton btn_dialogo_1;
+	
+	/** The btn dialogo 2. */
 	private JButton btn_dialogo_2;
+	
+	/** The resultset 1. */
 	private ResultSet resultset1;
+	
+	/** The combo articulo. */
 	private JComboBox<String> comboArticulo;
-	private Conecta_BBDD base_datos;
+	
+	/** The base datos. */
+	private ConectaBBDD base_datos;
+	
+	/** The label. */
 	private JLabel label;
 	/**
 	 * Create the frame.
 	 */
-	public Eliminar_Articulo()
+	public EliminarArticulo()
 	{
-		base_datos = new Conecta_BBDD();
+		base_datos = new ConectaBBDD();
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(NuevoArticulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 500, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,8 +110,8 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 			public void actionPerformed(ActionEvent e) 
 			{
 				base_datos.cierra_conexion();
-				Eliminar_Articulo.this.dispose();
-				new Eliminar_Articulo();
+				EliminarArticulo.this.dispose();
+				new EliminarArticulo();
 			}
 		});
 		buttonCancelar.setBounds(286, 397, 89, 23);
@@ -155,8 +188,8 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 					
 					base_datos.cierra_conexion();
 					dialogo1.setVisible(false);
-					Eliminar_Articulo.this.dispose();
-					new Eliminar_Articulo().setVisible(true);
+					EliminarArticulo.this.dispose();
+					new EliminarArticulo().setVisible(true);
 
 				} catch (SQLException e1)
 				{
@@ -177,31 +210,69 @@ public class Eliminar_Articulo extends JFrame implements WindowListener
 		this.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Window activated.
+	 *
+	 * @param e the e
+	 */
 	public void windowActivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window closed.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosed(WindowEvent e)
 	{
 		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
+	/**
+	 * Window closing.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosing(WindowEvent e)
 	{}
 
+	/**
+	 * Window deactivated.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeactivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window deiconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeiconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window iconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowIconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window opened.
+	 *
+	 * @param e the e
+	 */
 	public void windowOpened(WindowEvent e)
 	{}
 
 
+	/**
+	 * Fill JComboBox of items.
+	 */
 	public void rellena_jcombobox_articulos()
 	{
 		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");	

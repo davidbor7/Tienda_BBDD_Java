@@ -24,42 +24,89 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 
-public class Modificar_Articulo extends JFrame implements WindowListener, ItemListener
+
+/**
+ * The Class ModificarArticulo. This class modify items.
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class ModificarArticulo extends JFrame implements WindowListener, ItemListener
 {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	private Conecta_BBDD base_datos;
+	
+	/** The base datos. */
+	private ConectaBBDD base_datos;
+	
+	/** The content pane. */
 	private JPanel contentPane;
+	
+	/** The textfield descripcion. */
 	private JTextField textfieldDescripcion;
+	
+	/** The textfield precio. */
 	private JTextField textfieldPrecio;
+	
+	/** The textfield cantidad. */
 	private JTextField textfieldCantidad;
+	
+	/** The label precio. */
 	private JLabel labelPrecio;
+	
+	/** The label. */
 	private JLabel label;
+	
+	/** The label cantidad. */
 	private JLabel labelCantidad;
+	
+	/** The label modificar articulo. */
 	private JLabel labelModificarArticulo;
+	
+	/** The button cancelar. */
 	private JButton buttonCancelar;
+	
+	/** The button guardar. */
 	private JButton buttonGuardar;
+	
+	/** The label seleccionar articulo. */
 	private JLabel labelSeleccionarArticulo;
+	
+	/** The combo articulo. */
 	private JComboBox<String> comboArticulo;
+	
+	/** The dialogo 1. */
 	private JDialog dialogo1;
+	
+	/** The panel 1. */
 	private Panel panel1;
+	
+	/** The panel 2. */
 	private Panel panel2;
+	
+	/** The mensaje 1. */
 	private JLabel mensaje1;
+	
+	/** The btn dialogo 1. */
 	private JButton btn_dialogo_1;
+	
+	/** The resultset 1. */
 	private ResultSet resultset1;
+	
+	/** The resultset 2. */
 	private ResultSet resultset2;
+	
+	/** The nombre articulo. */
 	private String nombre_articulo;
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Articulo()
+	public ModificarArticulo()
 	{
-		base_datos = new Conecta_BBDD();
+		base_datos = new ConectaBBDD();
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(NuevoArticulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
 		setBounds(100, 100, 500, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -115,8 +162,8 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		buttonCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				Modificar_Articulo.this.setVisible(false);
-				Modificar_Articulo.this.dispose();
+				ModificarArticulo.this.setVisible(false);
+				ModificarArticulo.this.dispose();
 			}
 		});
 		buttonCancelar.setBounds(292, 397, 89, 23);
@@ -169,8 +216,8 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 				
 				base_datos.cierra_conexion();
 				dialogo1.setVisible(false);
-				Modificar_Articulo.this.dispose();
-				new Modificar_Articulo().setVisible(true);
+				ModificarArticulo.this.dispose();
+				new ModificarArticulo().setVisible(true);
 			}
 		});
 		//--------------------------------------------------------
@@ -187,30 +234,68 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		this.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Window activated.
+	 *
+	 * @param e the e
+	 */
 	public void windowActivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window closed.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosed(WindowEvent e)
 	{}
 
+	/**
+	 * Window closing.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosing(WindowEvent e)
 	{
 		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
+	/**
+	 * Window deactivated.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeactivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window deiconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeiconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window iconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowIconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window opened.
+	 *
+	 * @param e the e
+	 */
 	public void windowOpened(WindowEvent e)
 	{}
 
+	/**
+	 * Fill JComboBox of items
+	 */
 	public void rellena_jcombobox_articulos()
 	{
 		resultset1 = base_datos.obtener_objetos("SELECT descripcionArticulo FROM articulos ORDER BY 1;");
@@ -227,6 +312,9 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		}
 	}
 
+	/**
+	 * Fill JComboBox of items properties
+	 */
 	public void rellena_todos_los_campos()
 	{
 
@@ -245,6 +333,11 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		}		
 	}		
 	
+	/**
+	 * Item state changed.
+	 *
+	 * @param ie the ie
+	 */
 	@Override
 	public void itemStateChanged(ItemEvent ie)
 	{
@@ -262,6 +355,12 @@ public class Modificar_Articulo extends JFrame implements WindowListener, ItemLi
 		}
 	}	
 	
+	/**
+	 * Check quantity
+	 *
+	 * @param precio the price
+	 * @return the float
+	 */
 	public float comprueba_cantidad(String precio)
 	{
 		String precio_articulo = precio;

@@ -22,27 +22,43 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class Ver_Articulos extends JFrame implements WindowListener
+/**
+ * The Class VerArticulos. 
+ * @author David Borrego Asencio
+ * @since 11/01/2020
+ * @version 1.0
+ */
+public class VerArticulos extends JFrame implements WindowListener
 {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The content pane. */
 	private JPanel contentPane;
+	
+	/** The tabla. */
 	private JTable tabla;
+	
+	/** The resultset. */
 	private ResultSet resultset;
-	private Conecta_BBDD base_datos;
+	
+	/** The base datos. */
+	private ConectaBBDD base_datos;
+	
+	/** The modelo. */
 	private DefaultTableModel modelo;
+	
+	/** The tcr. */
 	private DefaultTableCellRenderer tcr;
 	/**
 	 * Create the frame.
 	 */
-	public Ver_Articulos()
+	public VerArticulos()
 	{
-		base_datos = new Conecta_BBDD();
+		base_datos = new ConectaBBDD();
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Nuevo_Articulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(NuevoArticulo.class.getResource("/dise\u00F1o_interfaces/SHOP.png")));
         setBounds(100, 100, 500, 470);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,7 +106,7 @@ public class Ver_Articulos extends JFrame implements WindowListener
         	public void actionPerformed(ActionEvent e)
         	{
         		base_datos.cierra_conexion();
-        		Ver_Articulos.this.dispose();
+        		VerArticulos.this.dispose();
         	}
         });
         button.setBounds(365, 390, 89, 23);
@@ -105,30 +121,68 @@ public class Ver_Articulos extends JFrame implements WindowListener
 
 	}
 
+	/**
+	 * Window activated.
+	 *
+	 * @param e the e
+	 */
 	public void windowActivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window closed.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosed(WindowEvent e)
 	{
 		base_datos.cierra_conexion();
 		this.dispose();
 	}
 
+	/**
+	 * Window closing.
+	 *
+	 * @param e the e
+	 */
 	public void windowClosing(WindowEvent e)
 	{}
 
+	/**
+	 * Window deactivated.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeactivated(WindowEvent e)
 	{}
 
+	/**
+	 * Window deiconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowDeiconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window iconified.
+	 *
+	 * @param e the e
+	 */
 	public void windowIconified(WindowEvent e)
 	{}
 
+	/**
+	 * Window opened.
+	 *
+	 * @param e the e
+	 */
 	public void windowOpened(WindowEvent e)
 	{}
 
+	/**
+	 * Fill table.
+	 */
 	public void rellena_tabla()
 	{
 
