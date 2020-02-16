@@ -102,7 +102,7 @@ public class InformeTickets extends JFrame
 		try
 		{			
 			// Compilar el informe generando fichero jasper
-			JasperCompileManager.compileReportToFile("tickets.jrxml");
+			JasperCompileManager.compileReportToFile("C:\\Tienda_BBDD\\tickets.jrxml");
 			System.out.println("Fichero tickets.jasper generado CORRECTAMENTE!");
 
 			// Objeto para guardar parámetros necesarios para el informe
@@ -113,7 +113,7 @@ public class InformeTickets extends JFrame
 			parametros.put("fechaHasta", cambiarFormatoFecha(textField_1.getText()));
 
 			// Cargar el informe compilado
-			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("tickets.jasper");
+			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("C:\\Tienda_BBDD\\tickets.jasper");
 
 			// Conectar a la base de datos para sacar la información
 			Class.forName("com.mysql.jdbc.Driver");
@@ -131,10 +131,10 @@ public class InformeTickets extends JFrame
 			 */
 
 			// Para exportarlo a pdf
-			JasperExportManager.exportReportToPdfFile(print, "Tickets.pdf");
+			JasperExportManager.exportReportToPdfFile(print, "C:\\Tienda_BBDD\\Tickets.pdf");
 
 			// Abrir el fichero PDF generado
-			File path = new File ("Tickets.pdf");
+			File path = new File ("C:\\Tienda_BBDD\\Tickets.pdf");
 			Desktop.getDesktop().open(path);
 
 			conexion.close();

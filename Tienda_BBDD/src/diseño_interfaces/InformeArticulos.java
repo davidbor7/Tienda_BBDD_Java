@@ -42,7 +42,7 @@ public class InformeArticulos {
 		{			
 
 			// Compilar el informe generando fichero jasper
-			JasperCompileManager.compileReportToFile("articulos.jrxml");
+			JasperCompileManager.compileReportToFile("C:\\Tienda_BBDD\\articulos.jrxml");
 			System.out.println("Fichero articulos.jasper generado CORRECTAMENTE!");
 
 			// Objeto para guardar parámetros necesarios para el informe
@@ -50,7 +50,7 @@ public class InformeArticulos {
 			
 	
 			// Cargar el informe compilado
-			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("articulos.jasper");
+			JasperReport report = (JasperReport)JRLoader.loadObjectFromFile("C:\\Tienda_BBDD\\articulos.jasper");
 
 			// Conectar a la base de datos para sacar la información
 			Class.forName("com.mysql.jdbc.Driver");
@@ -68,10 +68,10 @@ public class InformeArticulos {
 			 */
 
 			// Para exportarlo a pdf
-			JasperExportManager.exportReportToPdfFile(print, "Articulos.pdf");
+			JasperExportManager.exportReportToPdfFile(print, "C:\\Tienda_BBDD\\Articulos.pdf");
 
 			// Abrir el fichero PDF generado
-			File path = new File ("Articulos.pdf");
+			File path = new File ("C:\\Tienda_BBDD\\Articulos.pdf");
 			Desktop.getDesktop().open(path);
 
 			conexion.close();
