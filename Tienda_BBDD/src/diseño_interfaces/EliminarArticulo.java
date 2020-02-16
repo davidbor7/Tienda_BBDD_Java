@@ -111,7 +111,7 @@ public class EliminarArticulo extends JFrame implements WindowListener
 			{
 				base_datos.cierra_conexion();
 				EliminarArticulo.this.dispose();
-				new EliminarArticulo();
+				//new EliminarArticulo();
 			}
 		});
 		buttonCancelar.setBounds(286, 397, 89, 23);
@@ -189,7 +189,7 @@ public class EliminarArticulo extends JFrame implements WindowListener
 					base_datos.cierra_conexion();
 					dialogo1.setVisible(false);
 					EliminarArticulo.this.dispose();
-					new EliminarArticulo().setVisible(true);
+					//new EliminarArticulo().setVisible(true);
 
 				} catch (SQLException e1)
 				{
