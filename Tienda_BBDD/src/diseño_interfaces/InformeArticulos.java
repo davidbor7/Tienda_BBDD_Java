@@ -28,8 +28,6 @@ public class InformeArticulos {
 	public InformeArticulos() 
 	{
 
-		abre_informe();
-
 	}
 
 

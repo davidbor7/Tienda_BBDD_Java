@@ -23,7 +23,7 @@ public class  ConectaBBDD
 	private String url ="jdbc:mysql://localhost:3306/tienda?autoReconnect=true&useSSL=false";
 	
 	/** The login. */
-	private String login = "root";
+	private String login = "Admin_Tienda";
 	
 	/** The password. */
 	private String password = "Studium2019;";
